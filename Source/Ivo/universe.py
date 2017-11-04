@@ -21,7 +21,7 @@ class Oschi:
             name: unique name
             position: 3-tuple, in m
             mass: mass in kg
-            velocity: velocity in m/s
+            velocity: 3-tuple, in m/s
             rad: radius in m
         """
         self.name = name
@@ -58,15 +58,16 @@ class Oschi:
 
         return Oschi(name, pos, m, v, rad)
 
-    def grav_force(self, other: 'Oschi') -> np.array:
+    def grav_force(self, other: 'Oschi'):
         if not isinstance(other, Oschi):
             raise TypeError("can only gravitate Oschis!")
 
-        delta = self.position - other.position
-        dist = np.linalg.norm(delta)  # length of a vector
+        delta = other.position - self.position
+        dist = math.sqrt(delta[0] ** 2 + delta[1] ** 2 + delta[2] ** 2)
+        # print(self.name, other.name, dist)  # todo: remove debug
 
         # everything except delta is a scalar
-        return Universe.G * self.mass * other.mass * delta / dist ** 3
+        return Universe.G * delta * (self.mass * other.mass / dist ** 3)
 
     def __repr__(self):
         return '{:10} {:e} {:e} {:e}'.format(
@@ -84,19 +85,61 @@ class Oschi:
             return False
         return self.name == other.name
 
+    def __eq__(self, other):
+        return self.__cmp__(other)
+
+    def __copy__(self):
+        return self.__deepcopy__()
+
+    def __deepcopy__(self, memodict={}):
+        return Oschi(
+            self.name,
+            np.copy(self.position),
+            self.mass,
+            np.copy(self.velocity),
+            self.radius
+        )
+
 
 class Universe:
     G = 6.672 * 10 ** -11
 
-    def __init__(self, init_oschis: List[Oschi]):
-        self.delta_time = 60 * 60
+    def __init__(self, delta_time, init_oschis: List[Oschi]):
+        self.delta_time = delta_time
         self.oschis = init_oschis
 
     def add(self, oschi):
         self.oschis.append(oschi)
 
     def init_velocities(self):
-        pass
+        for oschi in self.oschis:
+            oschi.velocity = self.initial_speed(oschi)
+
+    def simulate(self):
+        # save a copy of the current state
+        # past = copy.deepcopy(self.oschis)
+        past = [o.__deepcopy__() for o in self.oschis]  # manual copy
+
+        # for all oschis ...
+        for idx, oschi in enumerate(self.oschis):  # need index to get past version
+            oschi_past = past[idx]
+            force = np.array((0, 0, 0), dtype=np.float64)
+
+            # ... calculate influence from all others...
+            for other_past in past:
+                if other_past.name == oschi.name:
+                    continue  # skip itself
+                force += oschi_past.grav_force(other_past)
+
+            # force to acceleration -> apply to v
+            acceleration = force / oschi_past.mass
+            oschi.velocity = oschi_past.velocity + acceleration * self.delta_time
+            # oschi.position = oschi_past.position + self.delta_time * oschi.velocity
+            oschi.position = oschi_past.position + \
+                             self.delta_time * oschi_past.velocity + \
+                             0.5 * (self.delta_time ** 2) * acceleration
+
+        return True
 
     # (3)
     def total_mass(self, exclude: Oschi = None):
@@ -122,6 +165,7 @@ class Universe:
         impulse = np.array((0.0, 0.0, 0.0), dtype=np.float64)
         for o in self.oschis:
             impulse += o.mass * o.velocity
+        return impulse
 
     # (8)
     def initial_speed_scalar(self, new_oschi: Oschi):
