@@ -30,13 +30,13 @@ def _startup():
     renderer_conn, simulation_conn = multiprocessing.Pipe()
     simulation_process = \
         multiprocessing.Process(target=simulation_mockup.startup,
-                                args=(simulation_conn, 16, 1))
+                                args=(simulation_conn, 16, 3))
     render_process = \
         multiprocessing.Process(target=galaxy_renderer.startup,
                                 args=(renderer_conn, 60), )
     simulation_process.start()
     render_process.start()
-    time.sleep(60)
+    time.sleep(120)
     simulation_conn.send(END_MESSAGE)
     renderer_conn.send(END_MESSAGE)
     simulation_process.join()

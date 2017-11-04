@@ -43,7 +43,7 @@ def _move_bodies(bodies, delta_t):
 
 def _initialise_bodies(nr_of_bodies):
     body_array = np.zeros((1, 4), dtype=np.float64)
-    body_array[0][0] = 1
+    body_array[0][0] = 0.5
     body_array[0][3] = 0.2
     return body_array
 
