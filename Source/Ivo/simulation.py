@@ -6,8 +6,8 @@ import sys
 from simulation_constants import END_MESSAGE
 
 def initialize():
-    dt = 60  # a minute
-    simple = [ss.sun, ss.earth]
+    dt = 600  # a minute
+    simple = [ss.sun, ss.earth, ss.mars]
     u = Universe(dt, simple)
     u.init_velocities()
 
@@ -23,6 +23,4 @@ def startup(sim_pipe):
                 print('simulation exiting ...')
                 sys.exit(0)
         u.simulate()
-        list = u.listify_oschis()
-        print(list)
-        sim_pipe.send(list)
+        sim_pipe.send(u.listify_oschis())
