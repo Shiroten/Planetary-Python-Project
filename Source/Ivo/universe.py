@@ -100,6 +100,14 @@ class Oschi:
             self.radius
         )
 
+    def render_list(self):
+        array = np.zeros(4, dtype=np.float64)
+        array[0] = self.position[0] / pow(10, -15)
+        array[1] = self.position[1] / pow(10, -15)
+        array[2] = self.position[2] / pow(10, -15)
+        array[3] = self.radius
+        return array
+
 
 class Universe:
     G = 6.672 * 10 ** -11
@@ -186,3 +194,11 @@ class Universe:
         bottom = np.linalg.norm(top)
 
         return top / bottom * self.initial_speed_scalar(new_oschi)
+
+    def listify_oschis(self):
+        body_array = np.zeros((len(self.oschis), 4), dtype=np.float64)
+        i = 0
+        for o in self.oschis:
+            body_array[i] = o.render_list()
+        return body_array
+
