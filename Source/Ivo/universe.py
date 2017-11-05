@@ -102,7 +102,7 @@ class Oschi:
 
     def render_list(self):
         array = np.zeros(4, dtype=np.float64)
-        normalization = -11.5
+        normalization = -11
         array[0] = self.position[0] * pow(10, normalization)
         array[1] = self.position[1] * pow(10, normalization)
         array[2] = self.position[2] * pow(10, normalization)

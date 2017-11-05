@@ -21,6 +21,7 @@ OpenGL output for gravity simulation
 #
 import sys
 import time
+
 try:
     from OpenGL import GLUT
     from OpenGL import GL
@@ -36,12 +37,14 @@ from simulation_constants import END_MESSAGE
 _WINDOW_SIZE = (512, 512)
 _WINDOW_POSITION = (100, 100)
 _LIGHT_POSITION = (2, 2, 3)
-_CAMERA_POSITION = (0, 0, 2)
+_CAMERA_POSITION = (0, 0, 22)
+
 
 class GalaxyRenderer:
     """
         Class containing OpenGL code
     """
+
     def __init__(self, render_pipe, fps):
         self.render_pipe = render_pipe
         self.fps = fps
@@ -74,7 +77,7 @@ class GalaxyRenderer:
         quad_obj = GLU.gluNewQuadric()
         GLU.gluQuadricDrawStyle(quad_obj, GLU.GLU_FILL)
         GLU.gluQuadricNormals(quad_obj, GLU.GLU_SMOOTH)
-        GLU.gluSphere(quad_obj, 1, 16, 16)
+        GLU.gluSphere(quad_obj, 1, 32, 32)
         GL.glEndList()
         GL.glShadeModel(GL.GL_SMOOTH)
         GL.glEnable(GL.GL_DEPTH_TEST)
@@ -85,16 +88,16 @@ class GalaxyRenderer:
         GL.glEnable(GL.GL_LIGHT0)
         light_pos = list(_LIGHT_POSITION) + [1]
         GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, light_pos)
-        GL.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, [1.0, 1.0, 1.0, 1.0])
-        GL.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, [1.0, 1.0, 1.0, 1.0])
+        GL.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, [0.0, 0.0, 1.0, 1.0])
+        GL.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, [1.0, 0.0, 0.0, 1.0])
         GL.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
-        GL.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, [0.2, .2, .2, 1])
+        GL.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, [0.5, .2, .2, 1])
         GL.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, [0.7, 0.7, 0.7, 1])
         GL.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, [0.1, 0.1, 0.1, 1])
-        GL.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 20)
+        GL.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 2)
         GL.glMatrixMode(GL.GL_PROJECTION)
         GL.glLoadIdentity()
-        GLU.gluPerspective(60, 1, .01, 10)
+        GLU.gluPerspective(60, 1, .01, 100)
         GL.glMatrixMode(GL.GL_MODELVIEW)
 
     def render(self):
@@ -106,14 +109,14 @@ class GalaxyRenderer:
             # glut event loop needs hard exit ...
             sys.exit(0)
         if self.bodies is None:
-            time.sleep(1/self.fps)
+            time.sleep(1 / self.fps)
             return
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
         GL.glMatrixMode(GL.GL_PROJECTION)
         GL.glLoadIdentity()
         x_size = GLUT.glutGet(GLUT.GLUT_WINDOW_WIDTH)
         y_size = GLUT.glutGet(GLUT.GLUT_WINDOW_HEIGHT)
-        GLU.gluPerspective(60, float(x_size) / float(y_size), 0.05, 10)
+        GLU.gluPerspective(60, float(x_size) / float(y_size), 0.01, 100)
         GL.glMatrixMode(GL.GL_MODELVIEW)
         GL.glLoadIdentity()
         GL.glTranslatef(-_CAMERA_POSITION[0],
@@ -148,7 +151,8 @@ class GalaxyRenderer:
                 self.bodies = pipe_input
                 GLUT.glutPostRedisplay()
         else:
-            time.sleep(1/self.fps)
+            time.sleep(1 / self.fps)
+
 
 def startup(render_pipe, fps):
     """
