@@ -102,9 +102,9 @@ class Oschi:
 
     def render_list(self):
         array = np.zeros(4, dtype=np.float64)
-        array[0] = self.position[0] / pow(10, -15)
-        array[1] = self.position[1] / pow(10, -15)
-        array[2] = self.position[2] / pow(10, -15)
+        array[0] = self.position[0] * pow(10, -12)
+        array[1] = self.position[1] * pow(10, -12)
+        array[2] = self.position[2] * pow(10, -12)
         array[3] = self.radius
         return array
 
@@ -200,5 +200,6 @@ class Universe:
         i = 0
         for o in self.oschis:
             body_array[i] = o.render_list()
+            i += 1
         return body_array
 

@@ -31,7 +31,7 @@ def _startup():
     renderer_conn, simulation_conn = multiprocessing.Pipe()
     simulation_process = \
         multiprocessing.Process(target=simulation.startup,
-                                args=(simulation_conn))
+                                args=(simulation_conn,))
     render_process = \
         multiprocessing.Process(target=galaxy_renderer.startup,
                                 args=(renderer_conn, 60), )

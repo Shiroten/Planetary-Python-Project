@@ -24,4 +24,5 @@ def startup(sim_pipe):
                 sys.exit(0)
         u.simulate()
         list = u.listify_oschis()
+        print(list)
         sim_pipe.send(list)
