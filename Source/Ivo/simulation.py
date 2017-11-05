@@ -6,11 +6,11 @@ from universe import Universe
 
 
 def initialize():
-    dt = 600  # a minute
+    dt = 60*60*24*7  # a minute
     # simple = [ss.sun, ss.earth, ss.mars]
     simple = [ss.sun, ss.mercury, ss.venus, ss.earth, ss.mars, ss.jupiter, ss.saturn, ss.uranus, ss.neptune]
     u = Universe(dt, simple)
-    u.init_velocities()
+    #u.init_velocities()
 
     return u
 

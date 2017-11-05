@@ -21,7 +21,7 @@ import sys
 import multiprocessing
 
 from PyQt5 import QtWidgets
-import simulation_mockup
+import simulation
 import galaxy_renderer
 from simulation_constants import END_MESSAGE
 
@@ -57,8 +57,8 @@ class SimulationGUI(QtWidgets.QWidget):
         """
         self.renderer_conn, self.simulation_conn = multiprocessing.Pipe()
         self.simulation_process = \
-            multiprocessing.Process(target=simulation_mockup.startup,
-                                    args=(self.simulation_conn, 16, 1))
+            multiprocessing.Process(target=simulation.startup,
+                                    args=(self.simulation_conn,))
         self.render_process = \
             multiprocessing.Process(target=galaxy_renderer.startup,
                                     args=(self.renderer_conn, 60), )
