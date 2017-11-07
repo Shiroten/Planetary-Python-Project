@@ -59,6 +59,11 @@ class Oschi:
         return Oschi(name, pos, m, v, rad)
 
     def grav_force(self, other: 'Oschi'):
+        """
+        Gibt den Kraftvektor zurück, den ein anderer Planet auf diesen auswirkt
+        :param other: ein anderer Planet
+        :return: Kraftvektor in Richtung des anderen Planeten
+        """
         if not isinstance(other, Oschi):
             raise TypeError("can only gravitate Oschis!")
 
@@ -148,7 +153,7 @@ class Universe:
                              self.delta_time * oschi_past.velocity + \
                              0.5 * (self.delta_time ** 2) * acceleration
 
-        return True
+        return self.oschis
 
     # (3)
     def total_mass(self, exclude: Oschi = None):
