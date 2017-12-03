@@ -88,6 +88,11 @@ class SimulationGUI(QMainWindow):
 
         print()
         print('Launch Render and Simulation...')
+		
+		self.mass = np.array(self.mass, dtype=np.float64)
+        self.rad = np.array(self.rad, dtype=np.float64)
+        self.pos = np.array(self.pos, dtype=np.float64)
+        self.vel = np.array(self.vel, dtype=np.float64)
 
         self.renderer_conn, self.simulation_conn = multiprocessing.Pipe()
         self.simulation_process = multiprocessing.Process(
@@ -158,10 +163,9 @@ class SimulationGUI(QMainWindow):
         ]
 
         print('Loading Solar System')
-        self.mass = python_masse
-        self.rad = python_rads
-
-        # convert to numpy
+		# convert to numpy
+        self.mass = np.array(python_masse, dtype=np.float64)
+        self.rad = np.array(python_rads, dtype=np.float64)
         self.pos = np.array(python_position, dtype=np.float64)
         self.vel = np.array(python_geschwindigkeit, dtype=np.float64)
 

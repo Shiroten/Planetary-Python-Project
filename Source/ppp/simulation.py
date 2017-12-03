@@ -19,7 +19,7 @@ def _move_bodies(bodies, delta_t):
         pos_y = body[1]
         body[0] = pos_x * cos_a - pos_y * sin_a
         body[1] = pos_x * sin_a + pos_y * cos_a
-    time.sleep(1 / __FPS)
+    # time.sleep(1 / __FPS)
 
 
 def _initialise_bodies(nr_of_bodies):
