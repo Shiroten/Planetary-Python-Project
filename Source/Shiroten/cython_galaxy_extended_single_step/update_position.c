@@ -1739,18 +1739,18 @@ static PyObject *__pyx_codeobj__26;
  * @cython.boundscheck(False)
  * @cython.cdivision(True)
  * cdef void update_position (double [:, :] position_view , double [:, :] new_postion_view, \             # <<<<<<<<<<<<<<
- *                    double [:, :] speed_view, double [:] beschleunigung_view, \
+ *                    double [:, :] speed_view, double [:, :] temp_view, \
  *                         double dt, int planet_index) nogil:
  */
 
-static void __pyx_f_15update_position_update_position(__Pyx_memviewslice __pyx_v_position_view, __Pyx_memviewslice __pyx_v_new_postion_view, __Pyx_memviewslice __pyx_v_speed_view, __Pyx_memviewslice __pyx_v_beschleunigung_view, double __pyx_v_dt, int __pyx_v_planet_index) {
+static void __pyx_f_15update_position_update_position(__Pyx_memviewslice __pyx_v_position_view, __Pyx_memviewslice __pyx_v_new_postion_view, __Pyx_memviewslice __pyx_v_speed_view, __Pyx_memviewslice __pyx_v_temp_view, double __pyx_v_dt, int __pyx_v_planet_index) {
   __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
   Py_ssize_t __pyx_t_2;
   __Pyx_memviewslice __pyx_t_3 = { 0, 0, { 0 }, { 0 }, { 0 } };
   Py_ssize_t __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
-  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  Py_ssize_t __pyx_t_7;
+  __Pyx_memviewslice __pyx_t_5 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_6;
+  __Pyx_memviewslice __pyx_t_7 = { 0, 0, { 0 }, { 0 }, { 0 } };
   Py_ssize_t __pyx_t_8;
   Py_ssize_t __pyx_t_9;
   Py_ssize_t __pyx_t_10;
@@ -1759,12 +1759,13 @@ static void __pyx_f_15update_position_update_position(__Pyx_memviewslice __pyx_v
   Py_ssize_t __pyx_t_13;
   Py_ssize_t __pyx_t_14;
   Py_ssize_t __pyx_t_15;
+  Py_ssize_t __pyx_t_16;
 
-  /* "update_position.pyx":11
- *                         double dt, int planet_index) nogil:
+  /* "update_position.pyx":12
  * 
+ *     #index acceleration 4
  *     new_postion_view[planet_index][0] = position_view[planet_index][0]  + dt * speed_view[planet_index][0] \             # <<<<<<<<<<<<<<
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[0]
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][0]
  * 
  */
   __pyx_t_1.data = __pyx_v_position_view.data;
@@ -1784,7 +1785,7 @@ static void __pyx_f_15update_position_update_position(__Pyx_memviewslice __pyx_v
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 11, __pyx_L1_error)
+        __PYX_ERR(0, 12, __pyx_L1_error)
     }
         __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -1812,7 +1813,7 @@ __pyx_t_2 = 0;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 11, __pyx_L1_error)
+        __PYX_ERR(0, 12, __pyx_L1_error)
     }
         __pyx_t_3.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -1824,26 +1825,52 @@ __pyx_t_3.strides[0] = __pyx_v_speed_view.strides[1];
 __pyx_t_4 = 0;
   if (__pyx_t_4 < 0) __pyx_t_4 += __pyx_t_3.shape[0];
 
-  /* "update_position.pyx":12
- * 
+  /* "update_position.pyx":13
+ *     #index acceleration 4
  *     new_postion_view[planet_index][0] = position_view[planet_index][0]  + dt * speed_view[planet_index][0] \
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[0]             # <<<<<<<<<<<<<<
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][0]             # <<<<<<<<<<<<<<
  * 
  *     new_postion_view[planet_index][1] = position_view[planet_index][1]  + dt * speed_view[planet_index][1] \
  */
-  __pyx_t_5 = 0;
-  if (__pyx_t_5 < 0) __pyx_t_5 += __pyx_v_beschleunigung_view.shape[0];
+  __pyx_t_5.data = __pyx_v_temp_view.data;
+  __pyx_t_5.memview = __pyx_v_temp_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_5, 0);
+  {
+    Py_ssize_t __pyx_tmp_idx = 4;
+    Py_ssize_t __pyx_tmp_shape = __pyx_v_temp_view.shape[0];
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_temp_view.strides[0];
+    if (1 && (__pyx_tmp_idx < 0))
+        __pyx_tmp_idx += __pyx_tmp_shape;
+    if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
+        PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 13, __pyx_L1_error)
+    }
+        __pyx_t_5.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
 
-  /* "update_position.pyx":11
- *                         double dt, int planet_index) nogil:
+__pyx_t_5.shape[0] = __pyx_v_temp_view.shape[1];
+__pyx_t_5.strides[0] = __pyx_v_temp_view.strides[1];
+    __pyx_t_5.suboffsets[0] = -1;
+
+__pyx_t_6 = 0;
+  if (__pyx_t_6 < 0) __pyx_t_6 += __pyx_t_5.shape[0];
+
+  /* "update_position.pyx":12
  * 
+ *     #index acceleration 4
  *     new_postion_view[planet_index][0] = position_view[planet_index][0]  + dt * speed_view[planet_index][0] \             # <<<<<<<<<<<<<<
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[0]
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][0]
  * 
  */
-  __pyx_t_6.data = __pyx_v_new_postion_view.data;
-  __pyx_t_6.memview = __pyx_v_new_postion_view.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_6, 0);
+  __pyx_t_7.data = __pyx_v_new_postion_view.data;
+  __pyx_t_7.memview = __pyx_v_new_postion_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_7, 0);
   {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_planet_index;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_new_postion_view.shape[0];
@@ -1858,38 +1885,41 @@ __pyx_t_4 = 0;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 11, __pyx_L1_error)
+        __PYX_ERR(0, 12, __pyx_L1_error)
     }
-        __pyx_t_6.data += __pyx_tmp_idx * __pyx_tmp_stride;
+        __pyx_t_7.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_t_6.shape[0] = __pyx_v_new_postion_view.shape[1];
-__pyx_t_6.strides[0] = __pyx_v_new_postion_view.strides[1];
-    __pyx_t_6.suboffsets[0] = -1;
+__pyx_t_7.shape[0] = __pyx_v_new_postion_view.shape[1];
+__pyx_t_7.strides[0] = __pyx_v_new_postion_view.strides[1];
+    __pyx_t_7.suboffsets[0] = -1;
 
-__pyx_t_7 = 0;
-  if (__pyx_t_7 < 0) __pyx_t_7 += __pyx_t_6.shape[0];
-  *((double *) ( /* dim=0 */ (__pyx_t_6.data + __pyx_t_7 * __pyx_t_6.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_2 * __pyx_t_1.strides[0]) ))) + (__pyx_v_dt * (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_4 * __pyx_t_3.strides[0]) ))))) + ((pow(__pyx_v_dt, 2.0) / 2.0) * (*((double *) ( /* dim=0 */ (__pyx_v_beschleunigung_view.data + __pyx_t_5 * __pyx_v_beschleunigung_view.strides[0]) )))));
-  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 0);
-  __pyx_t_6.memview = NULL;
-  __pyx_t_6.data = NULL;
+__pyx_t_8 = 0;
+  if (__pyx_t_8 < 0) __pyx_t_8 += __pyx_t_7.shape[0];
+  *((double *) ( /* dim=0 */ (__pyx_t_7.data + __pyx_t_8 * __pyx_t_7.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_2 * __pyx_t_1.strides[0]) ))) + (__pyx_v_dt * (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_4 * __pyx_t_3.strides[0]) ))))) + ((pow(__pyx_v_dt, 2.0) / 2.0) * (*((double *) ( /* dim=0 */ (__pyx_t_5.data + __pyx_t_6 * __pyx_t_5.strides[0]) )))));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_7, 0);
+  __pyx_t_7.memview = NULL;
+  __pyx_t_7.data = NULL;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 0);
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
   __PYX_XDEC_MEMVIEW(&__pyx_t_3, 0);
   __pyx_t_3.memview = NULL;
   __pyx_t_3.data = NULL;
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 0);
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
 
-  /* "update_position.pyx":14
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[0]
+  /* "update_position.pyx":15
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][0]
  * 
  *     new_postion_view[planet_index][1] = position_view[planet_index][1]  + dt * speed_view[planet_index][1] \             # <<<<<<<<<<<<<<
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[1]
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][1]
  * 
  */
-  __pyx_t_3.data = __pyx_v_position_view.data;
-  __pyx_t_3.memview = __pyx_v_position_view.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_3, 0);
+  __pyx_t_5.data = __pyx_v_position_view.data;
+  __pyx_t_5.memview = __pyx_v_position_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_5, 0);
   {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_planet_index;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_position_view.shape[0];
@@ -1904,20 +1934,20 @@ __pyx_t_7 = 0;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 14, __pyx_L1_error)
+        __PYX_ERR(0, 15, __pyx_L1_error)
     }
-        __pyx_t_3.data += __pyx_tmp_idx * __pyx_tmp_stride;
+        __pyx_t_5.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_t_3.shape[0] = __pyx_v_position_view.shape[1];
-__pyx_t_3.strides[0] = __pyx_v_position_view.strides[1];
-    __pyx_t_3.suboffsets[0] = -1;
+__pyx_t_5.shape[0] = __pyx_v_position_view.shape[1];
+__pyx_t_5.strides[0] = __pyx_v_position_view.strides[1];
+    __pyx_t_5.suboffsets[0] = -1;
 
-__pyx_t_8 = 1;
-  if (__pyx_t_8 < 0) __pyx_t_8 += __pyx_t_3.shape[0];
-  __pyx_t_1.data = __pyx_v_speed_view.data;
-  __pyx_t_1.memview = __pyx_v_speed_view.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_1, 0);
+__pyx_t_9 = 1;
+  if (__pyx_t_9 < 0) __pyx_t_9 += __pyx_t_5.shape[0];
+  __pyx_t_3.data = __pyx_v_speed_view.data;
+  __pyx_t_3.memview = __pyx_v_speed_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_3, 0);
   {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_planet_index;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_speed_view.shape[0];
@@ -1932,38 +1962,64 @@ __pyx_t_8 = 1;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 14, __pyx_L1_error)
+        __PYX_ERR(0, 15, __pyx_L1_error)
+    }
+        __pyx_t_3.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
+
+__pyx_t_3.shape[0] = __pyx_v_speed_view.shape[1];
+__pyx_t_3.strides[0] = __pyx_v_speed_view.strides[1];
+    __pyx_t_3.suboffsets[0] = -1;
+
+__pyx_t_10 = 1;
+  if (__pyx_t_10 < 0) __pyx_t_10 += __pyx_t_3.shape[0];
+
+  /* "update_position.pyx":16
+ * 
+ *     new_postion_view[planet_index][1] = position_view[planet_index][1]  + dt * speed_view[planet_index][1] \
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][1]             # <<<<<<<<<<<<<<
+ * 
+ *     new_postion_view[planet_index][2] = position_view[planet_index][2]  + dt * speed_view[planet_index][2] \
+ */
+  __pyx_t_1.data = __pyx_v_temp_view.data;
+  __pyx_t_1.memview = __pyx_v_temp_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_1, 0);
+  {
+    Py_ssize_t __pyx_tmp_idx = 4;
+    Py_ssize_t __pyx_tmp_shape = __pyx_v_temp_view.shape[0];
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_temp_view.strides[0];
+    if (1 && (__pyx_tmp_idx < 0))
+        __pyx_tmp_idx += __pyx_tmp_shape;
+    if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
+        PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 16, __pyx_L1_error)
     }
         __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_t_1.shape[0] = __pyx_v_speed_view.shape[1];
-__pyx_t_1.strides[0] = __pyx_v_speed_view.strides[1];
+__pyx_t_1.shape[0] = __pyx_v_temp_view.shape[1];
+__pyx_t_1.strides[0] = __pyx_v_temp_view.strides[1];
     __pyx_t_1.suboffsets[0] = -1;
 
-__pyx_t_9 = 1;
-  if (__pyx_t_9 < 0) __pyx_t_9 += __pyx_t_1.shape[0];
+__pyx_t_11 = 1;
+  if (__pyx_t_11 < 0) __pyx_t_11 += __pyx_t_1.shape[0];
 
   /* "update_position.pyx":15
- * 
- *     new_postion_view[planet_index][1] = position_view[planet_index][1]  + dt * speed_view[planet_index][1] \
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[1]             # <<<<<<<<<<<<<<
- * 
- *     new_postion_view[planet_index][2] = position_view[planet_index][2]  + dt * speed_view[planet_index][2] \
- */
-  __pyx_t_10 = 1;
-  if (__pyx_t_10 < 0) __pyx_t_10 += __pyx_v_beschleunigung_view.shape[0];
-
-  /* "update_position.pyx":14
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[0]
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][0]
  * 
  *     new_postion_view[planet_index][1] = position_view[planet_index][1]  + dt * speed_view[planet_index][1] \             # <<<<<<<<<<<<<<
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[1]
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][1]
  * 
  */
-  __pyx_t_6.data = __pyx_v_new_postion_view.data;
-  __pyx_t_6.memview = __pyx_v_new_postion_view.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_6, 0);
+  __pyx_t_7.data = __pyx_v_new_postion_view.data;
+  __pyx_t_7.memview = __pyx_v_new_postion_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_7, 0);
   {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_planet_index;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_new_postion_view.shape[0];
@@ -1978,21 +2034,24 @@ __pyx_t_9 = 1;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 14, __pyx_L1_error)
+        __PYX_ERR(0, 15, __pyx_L1_error)
     }
-        __pyx_t_6.data += __pyx_tmp_idx * __pyx_tmp_stride;
+        __pyx_t_7.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_t_6.shape[0] = __pyx_v_new_postion_view.shape[1];
-__pyx_t_6.strides[0] = __pyx_v_new_postion_view.strides[1];
-    __pyx_t_6.suboffsets[0] = -1;
+__pyx_t_7.shape[0] = __pyx_v_new_postion_view.shape[1];
+__pyx_t_7.strides[0] = __pyx_v_new_postion_view.strides[1];
+    __pyx_t_7.suboffsets[0] = -1;
 
-__pyx_t_11 = 1;
-  if (__pyx_t_11 < 0) __pyx_t_11 += __pyx_t_6.shape[0];
-  *((double *) ( /* dim=0 */ (__pyx_t_6.data + __pyx_t_11 * __pyx_t_6.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_8 * __pyx_t_3.strides[0]) ))) + (__pyx_v_dt * (*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_9 * __pyx_t_1.strides[0]) ))))) + ((pow(__pyx_v_dt, 2.0) / 2.0) * (*((double *) ( /* dim=0 */ (__pyx_v_beschleunigung_view.data + __pyx_t_10 * __pyx_v_beschleunigung_view.strides[0]) )))));
-  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 0);
-  __pyx_t_6.memview = NULL;
-  __pyx_t_6.data = NULL;
+__pyx_t_12 = 1;
+  if (__pyx_t_12 < 0) __pyx_t_12 += __pyx_t_7.shape[0];
+  *((double *) ( /* dim=0 */ (__pyx_t_7.data + __pyx_t_12 * __pyx_t_7.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_t_5.data + __pyx_t_9 * __pyx_t_5.strides[0]) ))) + (__pyx_v_dt * (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_10 * __pyx_t_3.strides[0]) ))))) + ((pow(__pyx_v_dt, 2.0) / 2.0) * (*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_11 * __pyx_t_1.strides[0]) )))));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_7, 0);
+  __pyx_t_7.memview = NULL;
+  __pyx_t_7.data = NULL;
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 0);
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
   __PYX_XDEC_MEMVIEW(&__pyx_t_3, 0);
   __pyx_t_3.memview = NULL;
   __pyx_t_3.data = NULL;
@@ -2000,11 +2059,11 @@ __pyx_t_11 = 1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "update_position.pyx":17
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[1]
+  /* "update_position.pyx":18
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][1]
  * 
  *     new_postion_view[planet_index][2] = position_view[planet_index][2]  + dt * speed_view[planet_index][2] \             # <<<<<<<<<<<<<<
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[2]
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][2]
  */
   __pyx_t_1.data = __pyx_v_position_view.data;
   __pyx_t_1.memview = __pyx_v_position_view.memview;
@@ -2023,7 +2082,7 @@ __pyx_t_11 = 1;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 17, __pyx_L1_error)
+        __PYX_ERR(0, 18, __pyx_L1_error)
     }
         __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2032,8 +2091,8 @@ __pyx_t_1.shape[0] = __pyx_v_position_view.shape[1];
 __pyx_t_1.strides[0] = __pyx_v_position_view.strides[1];
     __pyx_t_1.suboffsets[0] = -1;
 
-__pyx_t_12 = 2;
-  if (__pyx_t_12 < 0) __pyx_t_12 += __pyx_t_1.shape[0];
+__pyx_t_13 = 2;
+  if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_t_1.shape[0];
   __pyx_t_3.data = __pyx_v_speed_view.data;
   __pyx_t_3.memview = __pyx_v_speed_view.memview;
   __PYX_INC_MEMVIEW(&__pyx_t_3, 0);
@@ -2051,7 +2110,7 @@ __pyx_t_12 = 2;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 17, __pyx_L1_error)
+        __PYX_ERR(0, 18, __pyx_L1_error)
     }
         __pyx_t_3.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2060,26 +2119,52 @@ __pyx_t_3.shape[0] = __pyx_v_speed_view.shape[1];
 __pyx_t_3.strides[0] = __pyx_v_speed_view.strides[1];
     __pyx_t_3.suboffsets[0] = -1;
 
-__pyx_t_13 = 2;
-  if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_t_3.shape[0];
+__pyx_t_14 = 2;
+  if (__pyx_t_14 < 0) __pyx_t_14 += __pyx_t_3.shape[0];
 
-  /* "update_position.pyx":18
+  /* "update_position.pyx":19
  * 
  *     new_postion_view[planet_index][2] = position_view[planet_index][2]  + dt * speed_view[planet_index][2] \
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[2]             # <<<<<<<<<<<<<<
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][2]             # <<<<<<<<<<<<<<
  */
-  __pyx_t_14 = 2;
-  if (__pyx_t_14 < 0) __pyx_t_14 += __pyx_v_beschleunigung_view.shape[0];
+  __pyx_t_5.data = __pyx_v_temp_view.data;
+  __pyx_t_5.memview = __pyx_v_temp_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_5, 0);
+  {
+    Py_ssize_t __pyx_tmp_idx = 4;
+    Py_ssize_t __pyx_tmp_shape = __pyx_v_temp_view.shape[0];
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_temp_view.strides[0];
+    if (1 && (__pyx_tmp_idx < 0))
+        __pyx_tmp_idx += __pyx_tmp_shape;
+    if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
+        PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 19, __pyx_L1_error)
+    }
+        __pyx_t_5.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
 
-  /* "update_position.pyx":17
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[1]
+__pyx_t_5.shape[0] = __pyx_v_temp_view.shape[1];
+__pyx_t_5.strides[0] = __pyx_v_temp_view.strides[1];
+    __pyx_t_5.suboffsets[0] = -1;
+
+__pyx_t_15 = 2;
+  if (__pyx_t_15 < 0) __pyx_t_15 += __pyx_t_5.shape[0];
+
+  /* "update_position.pyx":18
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][1]
  * 
  *     new_postion_view[planet_index][2] = position_view[planet_index][2]  + dt * speed_view[planet_index][2] \             # <<<<<<<<<<<<<<
- *                                                 + ((dt ** 2) / 2) * beschleunigung_view[2]
+ *                                                 + ((dt ** 2) / 2) * temp_view[4][2]
  */
-  __pyx_t_6.data = __pyx_v_new_postion_view.data;
-  __pyx_t_6.memview = __pyx_v_new_postion_view.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_6, 0);
+  __pyx_t_7.data = __pyx_v_new_postion_view.data;
+  __pyx_t_7.memview = __pyx_v_new_postion_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_7, 0);
   {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_planet_index;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_new_postion_view.shape[0];
@@ -2094,33 +2179,36 @@ __pyx_t_13 = 2;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 17, __pyx_L1_error)
+        __PYX_ERR(0, 18, __pyx_L1_error)
     }
-        __pyx_t_6.data += __pyx_tmp_idx * __pyx_tmp_stride;
+        __pyx_t_7.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_t_6.shape[0] = __pyx_v_new_postion_view.shape[1];
-__pyx_t_6.strides[0] = __pyx_v_new_postion_view.strides[1];
-    __pyx_t_6.suboffsets[0] = -1;
+__pyx_t_7.shape[0] = __pyx_v_new_postion_view.shape[1];
+__pyx_t_7.strides[0] = __pyx_v_new_postion_view.strides[1];
+    __pyx_t_7.suboffsets[0] = -1;
 
-__pyx_t_15 = 2;
-  if (__pyx_t_15 < 0) __pyx_t_15 += __pyx_t_6.shape[0];
-  *((double *) ( /* dim=0 */ (__pyx_t_6.data + __pyx_t_15 * __pyx_t_6.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_12 * __pyx_t_1.strides[0]) ))) + (__pyx_v_dt * (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_13 * __pyx_t_3.strides[0]) ))))) + ((pow(__pyx_v_dt, 2.0) / 2.0) * (*((double *) ( /* dim=0 */ (__pyx_v_beschleunigung_view.data + __pyx_t_14 * __pyx_v_beschleunigung_view.strides[0]) )))));
-  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 0);
-  __pyx_t_6.memview = NULL;
-  __pyx_t_6.data = NULL;
+__pyx_t_16 = 2;
+  if (__pyx_t_16 < 0) __pyx_t_16 += __pyx_t_7.shape[0];
+  *((double *) ( /* dim=0 */ (__pyx_t_7.data + __pyx_t_16 * __pyx_t_7.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_13 * __pyx_t_1.strides[0]) ))) + (__pyx_v_dt * (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_14 * __pyx_t_3.strides[0]) ))))) + ((pow(__pyx_v_dt, 2.0) / 2.0) * (*((double *) ( /* dim=0 */ (__pyx_t_5.data + __pyx_t_15 * __pyx_t_5.strides[0]) )))));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_7, 0);
+  __pyx_t_7.memview = NULL;
+  __pyx_t_7.data = NULL;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 0);
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
   __PYX_XDEC_MEMVIEW(&__pyx_t_3, 0);
   __pyx_t_3.memview = NULL;
   __pyx_t_3.data = NULL;
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 0);
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
 
   /* "update_position.pyx":7
  * @cython.boundscheck(False)
  * @cython.cdivision(True)
  * cdef void update_position (double [:, :] position_view , double [:, :] new_postion_view, \             # <<<<<<<<<<<<<<
- *                    double [:, :] speed_view, double [:] beschleunigung_view, \
+ *                    double [:, :] speed_view, double [:, :] temp_view, \
  *                         double dt, int planet_index) nogil:
  */
 
@@ -2129,7 +2217,8 @@ __pyx_t_15 = 2;
   __pyx_L1_error:;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 0);
   __PYX_XDEC_MEMVIEW(&__pyx_t_3, 0);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 0);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 0);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_7, 0);
   __Pyx_WriteUnraisable("update_position.update_position", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __pyx_L0:;
 }

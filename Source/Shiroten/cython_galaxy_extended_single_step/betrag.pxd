@@ -1,1 +1,1 @@
-cdef void Betrag (double [:], double[:]) nogil
+cdef void Betrag (double[:, :]) nogil

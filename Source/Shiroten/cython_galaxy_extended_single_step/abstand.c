@@ -1738,30 +1738,31 @@ static PyObject *__pyx_codeobj__26;
 /* "abstand.pyx":7
  * @cython.boundscheck(False)
  * @cython.cdivision(True)
- * cdef void Abstand (double [:, :] position_view , double[:] result ,int head, int tail) nogil:             # <<<<<<<<<<<<<<
- *     result[0] = position_view[head][0] - position_view[tail][0]
- *     result[1] = position_view[head][1] - position_view[tail][1]
+ * cdef void Abstand (double [:, :] position_view , double[:, :] temp_view, int head, int tail) nogil:             # <<<<<<<<<<<<<<
+ * 
+ *     #index distance 0
  */
 
-static void __pyx_f_7abstand_Abstand(__Pyx_memviewslice __pyx_v_position_view, __Pyx_memviewslice __pyx_v_result, int __pyx_v_head, int __pyx_v_tail) {
+static void __pyx_f_7abstand_Abstand(__Pyx_memviewslice __pyx_v_position_view, __Pyx_memviewslice __pyx_v_temp_view, int __pyx_v_head, int __pyx_v_tail) {
   __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
   Py_ssize_t __pyx_t_2;
   __Pyx_memviewslice __pyx_t_3 = { 0, 0, { 0 }, { 0 }, { 0 } };
   Py_ssize_t __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
+  __Pyx_memviewslice __pyx_t_5 = { 0, 0, { 0 }, { 0 }, { 0 } };
   Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
   Py_ssize_t __pyx_t_8;
   Py_ssize_t __pyx_t_9;
   Py_ssize_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
+  Py_ssize_t __pyx_t_12;
 
-  /* "abstand.pyx":8
- * @cython.cdivision(True)
- * cdef void Abstand (double [:, :] position_view , double[:] result ,int head, int tail) nogil:
- *     result[0] = position_view[head][0] - position_view[tail][0]             # <<<<<<<<<<<<<<
- *     result[1] = position_view[head][1] - position_view[tail][1]
- *     result[2] = position_view[head][2] - position_view[tail][2]
+  /* "abstand.pyx":10
+ * 
+ *     #index distance 0
+ *     temp_view[0][0] = position_view[head][0] - position_view[tail][0]             # <<<<<<<<<<<<<<
+ *     temp_view[0][1] = position_view[head][1] - position_view[tail][1]
+ *     temp_view[0][2] = position_view[head][2] - position_view[tail][2]
  */
   __pyx_t_1.data = __pyx_v_position_view.data;
   __pyx_t_1.memview = __pyx_v_position_view.memview;
@@ -1780,7 +1781,7 @@ static void __pyx_f_7abstand_Abstand(__Pyx_memviewslice __pyx_v_position_view, _
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 8, __pyx_L1_error)
+        __PYX_ERR(0, 10, __pyx_L1_error)
     }
         __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -1808,7 +1809,7 @@ __pyx_t_2 = 0;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 8, __pyx_L1_error)
+        __PYX_ERR(0, 10, __pyx_L1_error)
     }
         __pyx_t_3.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -1819,9 +1820,38 @@ __pyx_t_3.strides[0] = __pyx_v_position_view.strides[1];
 
 __pyx_t_4 = 0;
   if (__pyx_t_4 < 0) __pyx_t_4 += __pyx_t_3.shape[0];
-  __pyx_t_5 = 0;
-  if (__pyx_t_5 < 0) __pyx_t_5 += __pyx_v_result.shape[0];
-  *((double *) ( /* dim=0 */ (__pyx_v_result.data + __pyx_t_5 * __pyx_v_result.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_2 * __pyx_t_1.strides[0]) ))) - (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_4 * __pyx_t_3.strides[0]) ))));
+  __pyx_t_5.data = __pyx_v_temp_view.data;
+  __pyx_t_5.memview = __pyx_v_temp_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_5, 0);
+  {
+    Py_ssize_t __pyx_tmp_idx = 0;
+    Py_ssize_t __pyx_tmp_shape = __pyx_v_temp_view.shape[0];
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_temp_view.strides[0];
+    if (1 && (__pyx_tmp_idx < 0))
+        __pyx_tmp_idx += __pyx_tmp_shape;
+    if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
+        PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 10, __pyx_L1_error)
+    }
+        __pyx_t_5.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
+
+__pyx_t_5.shape[0] = __pyx_v_temp_view.shape[1];
+__pyx_t_5.strides[0] = __pyx_v_temp_view.strides[1];
+    __pyx_t_5.suboffsets[0] = -1;
+
+__pyx_t_6 = 0;
+  if (__pyx_t_6 < 0) __pyx_t_6 += __pyx_t_5.shape[0];
+  *((double *) ( /* dim=0 */ (__pyx_t_5.data + __pyx_t_6 * __pyx_t_5.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_2 * __pyx_t_1.strides[0]) ))) - (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_4 * __pyx_t_3.strides[0]) ))));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 0);
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 0);
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
@@ -1829,11 +1859,11 @@ __pyx_t_4 = 0;
   __pyx_t_3.memview = NULL;
   __pyx_t_3.data = NULL;
 
-  /* "abstand.pyx":9
- * cdef void Abstand (double [:, :] position_view , double[:] result ,int head, int tail) nogil:
- *     result[0] = position_view[head][0] - position_view[tail][0]
- *     result[1] = position_view[head][1] - position_view[tail][1]             # <<<<<<<<<<<<<<
- *     result[2] = position_view[head][2] - position_view[tail][2]
+  /* "abstand.pyx":11
+ *     #index distance 0
+ *     temp_view[0][0] = position_view[head][0] - position_view[tail][0]
+ *     temp_view[0][1] = position_view[head][1] - position_view[tail][1]             # <<<<<<<<<<<<<<
+ *     temp_view[0][2] = position_view[head][2] - position_view[tail][2]
  */
   __pyx_t_3.data = __pyx_v_position_view.data;
   __pyx_t_3.memview = __pyx_v_position_view.memview;
@@ -1852,7 +1882,7 @@ __pyx_t_4 = 0;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 9, __pyx_L1_error)
+        __PYX_ERR(0, 11, __pyx_L1_error)
     }
         __pyx_t_3.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -1860,40 +1890,69 @@ __pyx_t_4 = 0;
 __pyx_t_3.shape[0] = __pyx_v_position_view.shape[1];
 __pyx_t_3.strides[0] = __pyx_v_position_view.strides[1];
     __pyx_t_3.suboffsets[0] = -1;
-
-__pyx_t_6 = 1;
-  if (__pyx_t_6 < 0) __pyx_t_6 += __pyx_t_3.shape[0];
-  __pyx_t_1.data = __pyx_v_position_view.data;
-  __pyx_t_1.memview = __pyx_v_position_view.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_1, 0);
-  {
-    Py_ssize_t __pyx_tmp_idx = __pyx_v_tail;
-    Py_ssize_t __pyx_tmp_shape = __pyx_v_position_view.shape[0];
-    Py_ssize_t __pyx_tmp_stride = __pyx_v_position_view.strides[0];
-    if (1 && (__pyx_tmp_idx < 0))
-        __pyx_tmp_idx += __pyx_tmp_shape;
-    if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
-            #ifdef WITH_THREAD
-            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
-            #endif
-        PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
-            #ifdef WITH_THREAD
-            PyGILState_Release(__pyx_gilstate_save);
-            #endif
-        __PYX_ERR(0, 9, __pyx_L1_error)
-    }
-        __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
-}
-
-__pyx_t_1.shape[0] = __pyx_v_position_view.shape[1];
-__pyx_t_1.strides[0] = __pyx_v_position_view.strides[1];
-    __pyx_t_1.suboffsets[0] = -1;
 
 __pyx_t_7 = 1;
-  if (__pyx_t_7 < 0) __pyx_t_7 += __pyx_t_1.shape[0];
-  __pyx_t_8 = 1;
-  if (__pyx_t_8 < 0) __pyx_t_8 += __pyx_v_result.shape[0];
-  *((double *) ( /* dim=0 */ (__pyx_v_result.data + __pyx_t_8 * __pyx_v_result.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_6 * __pyx_t_3.strides[0]) ))) - (*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_7 * __pyx_t_1.strides[0]) ))));
+  if (__pyx_t_7 < 0) __pyx_t_7 += __pyx_t_3.shape[0];
+  __pyx_t_1.data = __pyx_v_position_view.data;
+  __pyx_t_1.memview = __pyx_v_position_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_1, 0);
+  {
+    Py_ssize_t __pyx_tmp_idx = __pyx_v_tail;
+    Py_ssize_t __pyx_tmp_shape = __pyx_v_position_view.shape[0];
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_position_view.strides[0];
+    if (1 && (__pyx_tmp_idx < 0))
+        __pyx_tmp_idx += __pyx_tmp_shape;
+    if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
+        PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 11, __pyx_L1_error)
+    }
+        __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
+
+__pyx_t_1.shape[0] = __pyx_v_position_view.shape[1];
+__pyx_t_1.strides[0] = __pyx_v_position_view.strides[1];
+    __pyx_t_1.suboffsets[0] = -1;
+
+__pyx_t_8 = 1;
+  if (__pyx_t_8 < 0) __pyx_t_8 += __pyx_t_1.shape[0];
+  __pyx_t_5.data = __pyx_v_temp_view.data;
+  __pyx_t_5.memview = __pyx_v_temp_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_5, 0);
+  {
+    Py_ssize_t __pyx_tmp_idx = 0;
+    Py_ssize_t __pyx_tmp_shape = __pyx_v_temp_view.shape[0];
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_temp_view.strides[0];
+    if (1 && (__pyx_tmp_idx < 0))
+        __pyx_tmp_idx += __pyx_tmp_shape;
+    if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
+        PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 11, __pyx_L1_error)
+    }
+        __pyx_t_5.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
+
+__pyx_t_5.shape[0] = __pyx_v_temp_view.shape[1];
+__pyx_t_5.strides[0] = __pyx_v_temp_view.strides[1];
+    __pyx_t_5.suboffsets[0] = -1;
+
+__pyx_t_9 = 1;
+  if (__pyx_t_9 < 0) __pyx_t_9 += __pyx_t_5.shape[0];
+  *((double *) ( /* dim=0 */ (__pyx_t_5.data + __pyx_t_9 * __pyx_t_5.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_7 * __pyx_t_3.strides[0]) ))) - (*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_8 * __pyx_t_1.strides[0]) ))));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 0);
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
   __PYX_XDEC_MEMVIEW(&__pyx_t_3, 0);
   __pyx_t_3.memview = NULL;
   __pyx_t_3.data = NULL;
@@ -1901,10 +1960,10 @@ __pyx_t_7 = 1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "abstand.pyx":10
- *     result[0] = position_view[head][0] - position_view[tail][0]
- *     result[1] = position_view[head][1] - position_view[tail][1]
- *     result[2] = position_view[head][2] - position_view[tail][2]             # <<<<<<<<<<<<<<
+  /* "abstand.pyx":12
+ *     temp_view[0][0] = position_view[head][0] - position_view[tail][0]
+ *     temp_view[0][1] = position_view[head][1] - position_view[tail][1]
+ *     temp_view[0][2] = position_view[head][2] - position_view[tail][2]             # <<<<<<<<<<<<<<
  */
   __pyx_t_1.data = __pyx_v_position_view.data;
   __pyx_t_1.memview = __pyx_v_position_view.memview;
@@ -1923,7 +1982,7 @@ __pyx_t_7 = 1;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 10, __pyx_L1_error)
+        __PYX_ERR(0, 12, __pyx_L1_error)
     }
         __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -1932,8 +1991,8 @@ __pyx_t_1.shape[0] = __pyx_v_position_view.shape[1];
 __pyx_t_1.strides[0] = __pyx_v_position_view.strides[1];
     __pyx_t_1.suboffsets[0] = -1;
 
-__pyx_t_9 = 2;
-  if (__pyx_t_9 < 0) __pyx_t_9 += __pyx_t_1.shape[0];
+__pyx_t_10 = 2;
+  if (__pyx_t_10 < 0) __pyx_t_10 += __pyx_t_1.shape[0];
   __pyx_t_3.data = __pyx_v_position_view.data;
   __pyx_t_3.memview = __pyx_v_position_view.memview;
   __PYX_INC_MEMVIEW(&__pyx_t_3, 0);
@@ -1951,7 +2010,7 @@ __pyx_t_9 = 2;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 10, __pyx_L1_error)
+        __PYX_ERR(0, 12, __pyx_L1_error)
     }
         __pyx_t_3.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -1960,11 +2019,40 @@ __pyx_t_3.shape[0] = __pyx_v_position_view.shape[1];
 __pyx_t_3.strides[0] = __pyx_v_position_view.strides[1];
     __pyx_t_3.suboffsets[0] = -1;
 
-__pyx_t_10 = 2;
-  if (__pyx_t_10 < 0) __pyx_t_10 += __pyx_t_3.shape[0];
-  __pyx_t_11 = 2;
-  if (__pyx_t_11 < 0) __pyx_t_11 += __pyx_v_result.shape[0];
-  *((double *) ( /* dim=0 */ (__pyx_v_result.data + __pyx_t_11 * __pyx_v_result.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_9 * __pyx_t_1.strides[0]) ))) - (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_10 * __pyx_t_3.strides[0]) ))));
+__pyx_t_11 = 2;
+  if (__pyx_t_11 < 0) __pyx_t_11 += __pyx_t_3.shape[0];
+  __pyx_t_5.data = __pyx_v_temp_view.data;
+  __pyx_t_5.memview = __pyx_v_temp_view.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_5, 0);
+  {
+    Py_ssize_t __pyx_tmp_idx = 0;
+    Py_ssize_t __pyx_tmp_shape = __pyx_v_temp_view.shape[0];
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_temp_view.strides[0];
+    if (1 && (__pyx_tmp_idx < 0))
+        __pyx_tmp_idx += __pyx_tmp_shape;
+    if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
+        PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 12, __pyx_L1_error)
+    }
+        __pyx_t_5.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
+
+__pyx_t_5.shape[0] = __pyx_v_temp_view.shape[1];
+__pyx_t_5.strides[0] = __pyx_v_temp_view.strides[1];
+    __pyx_t_5.suboffsets[0] = -1;
+
+__pyx_t_12 = 2;
+  if (__pyx_t_12 < 0) __pyx_t_12 += __pyx_t_5.shape[0];
+  *((double *) ( /* dim=0 */ (__pyx_t_5.data + __pyx_t_12 * __pyx_t_5.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_t_1.data + __pyx_t_10 * __pyx_t_1.strides[0]) ))) - (*((double *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_11 * __pyx_t_3.strides[0]) ))));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 0);
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 0);
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
@@ -1975,9 +2063,9 @@ __pyx_t_10 = 2;
   /* "abstand.pyx":7
  * @cython.boundscheck(False)
  * @cython.cdivision(True)
- * cdef void Abstand (double [:, :] position_view , double[:] result ,int head, int tail) nogil:             # <<<<<<<<<<<<<<
- *     result[0] = position_view[head][0] - position_view[tail][0]
- *     result[1] = position_view[head][1] - position_view[tail][1]
+ * cdef void Abstand (double [:, :] position_view , double[:, :] temp_view, int head, int tail) nogil:             # <<<<<<<<<<<<<<
+ * 
+ *     #index distance 0
  */
 
   /* function exit code */
@@ -1985,6 +2073,7 @@ __pyx_t_10 = 2;
   __pyx_L1_error:;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 0);
   __PYX_XDEC_MEMVIEW(&__pyx_t_3, 0);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 0);
   __Pyx_WriteUnraisable("abstand.Abstand", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __pyx_L0:;
 }

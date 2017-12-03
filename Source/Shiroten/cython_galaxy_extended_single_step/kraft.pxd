@@ -1,1 +1,1 @@
-cdef void Kraft (double [:], double [:],  double [:], int, int, double[:]) nogil
+cdef void Kraft (double [:], int, int, double[:, :]) nogil

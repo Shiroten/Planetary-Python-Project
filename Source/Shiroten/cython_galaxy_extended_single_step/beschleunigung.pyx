@@ -4,8 +4,11 @@ cimport cython
 #Beschleunigung_Erde  = Kraft_Erde  / masse
 @cython.boundscheck(False)
 @cython.cdivision(True)
-cdef void Beschleunigung (double [:] kraft_view , double [:] masse_view, int massen_index, double[:] result) nogil:
+cdef void Beschleunigung (double [:] masse_view, int massen_index, double[:, :] temp_view) nogil:
     cdef float G = 6.672 * 10 ** -11
-    result[0] = kraft_view[0]  / masse_view[massen_index]
-    result[1] = kraft_view[1]  / masse_view[massen_index]
-    result[2] = kraft_view[2]  / masse_view[massen_index]
+    
+    #index single_force 2
+    #index acceleration 4
+    temp_view[4][0] = temp_view[2][0]  / masse_view[massen_index]
+    temp_view[4][1] = temp_view[2][1]  / masse_view[massen_index]
+    temp_view[4][2] = temp_view[2][2]  / masse_view[massen_index]

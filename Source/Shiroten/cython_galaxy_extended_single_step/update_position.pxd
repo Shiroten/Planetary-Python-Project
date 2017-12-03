@@ -1,1 +1,1 @@
-cdef void update_position (double [:, :], double [:, :], double [:, :],double [:], double, int) nogil
+cdef void update_position (double [:, :], double [:, :], double [:, :], double [:, :], double, int) nogil

@@ -1,1 +1,1 @@
-cdef void Beschleunigung (double [:], double [:], int, double[:]) nogil
+cdef void Beschleunigung (double [:], int, double[:, :]) nogil

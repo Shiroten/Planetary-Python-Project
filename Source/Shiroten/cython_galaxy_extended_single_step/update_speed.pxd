@@ -1,1 +1,1 @@
-cdef void update_speed (double [:, :], double [:, :], double [:], double, int) nogil
+cdef void update_speed (double [:, :], double [:, :], double [:, :], double, int) nogil
