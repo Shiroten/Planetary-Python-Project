@@ -29,7 +29,7 @@ def startup(sim_pipe):
         [4_498_252_900_000, 0, 0]
     ]
 
-    python_geschwindigkeit = [
+    python_speed = [
         #"Sun"
         [0, 0, 0],     
         #"Mercury"
@@ -75,7 +75,7 @@ def startup(sim_pipe):
         1.0244 * 10 ** 26
     ]
 
-    FACTOR = 5
+    FACTOR = 1
     radius =  [
         0.25 * FACTOR,
         0.02 * FACTOR,
@@ -88,6 +88,9 @@ def startup(sim_pipe):
         0.1 * FACTOR,
         0.1 * FACTOR
     ]
+    position = np.array(python_position, dtype=np.float64)
+    speed = np.array(python_speed, dtype=np.float64)
+    masse = np.array(python_masse, dtype=np.float64)
 
     while True:
         if sim_pipe.poll():
@@ -96,7 +99,7 @@ def startup(sim_pipe):
                 print('simulation exiting ...')
                 sys.exit(0)
 
-        Loop(python_position, python_geschwindigkeit, python_masse)
+        Loop(position, speed, masse)
 
         body_array = np.zeros((len(python_position), 4), dtype=np.float64)
         normalization = -11

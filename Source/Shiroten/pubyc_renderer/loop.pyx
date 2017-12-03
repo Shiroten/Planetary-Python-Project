@@ -6,15 +6,11 @@ from beschleunigung cimport Beschleunigung
 from update_position cimport update_position
 from update_speed cimport update_speed
 import numpy as np
+import time
 cimport cython
 
 @cython.boundscheck(False)
-cpdef Loop (python_position, python_speed, python_masse):
-    
-    #Umwandeln in Numpy Arrays
-    position = np.array(python_position, dtype=np.float64)
-    speed = np.array(python_speed,dtype=np.float64)
-    masse = np.array(python_masse,dtype=np.float64)
+cpdef Loop (position, speed, masse):
 
     #Umwandlung in MemoryView
     cdef double [:, :] position_view = position
@@ -25,7 +21,7 @@ cpdef Loop (python_position, python_speed, python_masse):
 
     #Statische Variable
     cdef int dt = 60
-    cdef int number_planets = len(python_position)
+    cdef int number_planets = len(position)
     cdef int i, current_planet, planet
     cdef int list_index
     
@@ -60,5 +56,4 @@ cpdef Loop (python_position, python_speed, python_masse):
     
     print(position)
     
-    python_position = position.tolist()
-    python_speed = speed.tolist()
+    time.sleep(1/60)
