@@ -1,5 +1,3 @@
-from random import randint
-
 import numpy as np
 
 
@@ -14,17 +12,13 @@ def random_numpy(mini, maxi, n=3):
     Returns:
         np.array
     """
-    vec = np.zeros(n, dtype=np.float64)
 
-    for i in range(n):
-        vec[i] = randint(mini, maxi)
-
-    return vec
+    return np.random.uniform(mini, maxi, n)
 
 
 def random_int(mini, maxi):
     """
-    Mirror of randint
+    Random int
     Args:
         mini: minimum int
         maxi: maximum int
@@ -32,7 +26,7 @@ def random_int(mini, maxi):
     Returns:
         random
     """
-    return randint(mini, maxi)
+    return np.random.uniform(mini, maxi)
 
 
 def calc_init_speeds(pos_list, mass_list):
@@ -68,7 +62,7 @@ def calc_init_speeds(pos_list, mass_list):
         center_ex = (mr_sum - mass * pos) / total_mass_ex
 
         # skalar Geschwindigkeit
-        r = np.linalg.norm(new_oschi.position - center_ex)
+        r = np.linalg.norm(pos - center_ex)
         vel_scalar = (total_mass_ex / total_mass) * np.sqrt(g * total_mass / r)
 
         # gerichtet

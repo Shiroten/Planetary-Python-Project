@@ -37,7 +37,7 @@ from simulation_constants import END_MESSAGE
 _WINDOW_SIZE = (512, 512)
 _WINDOW_POSITION = (100, 100)
 _LIGHT_POSITION = (2, 2, 3)
-_CAMERA_POSITION = (0, 0, 22)
+_CAMERA_POSITION = (0, 0, 2)
 
 
 class GalaxyRenderer:
