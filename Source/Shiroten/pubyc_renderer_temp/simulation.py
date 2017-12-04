@@ -7,6 +7,7 @@ import math
 import time
 
 def startup(sim_pipe):
+    #Sonnesystem
     python_position = [
         #"Sun"
         [0, 0, 0],     
@@ -76,7 +77,7 @@ def startup(sim_pipe):
         1.0244 * 10 ** 26
     ]
 
-    FACTOR = 5
+    FACTOR = 0.1
     radius =  [
         0.25 * FACTOR,
         0.02 * FACTOR,
@@ -89,10 +90,11 @@ def startup(sim_pipe):
         0.1 * FACTOR,
         0.1 * FACTOR
     ]
+    
     position = np.array(python_position, dtype=np.float64)
-    speed = np.array(python_speed, dtype=np.float64)
-    masse = np.array(python_masse, dtype=np.float64)
-    dt = 60
+    speed = np.array(python_speed,dtype=np.float64)
+    masse = np.array(python_masse,dtype=np.float64)
+    dt = 60 * 60 / 4
 
     while True:
         if sim_pipe.poll():
@@ -100,11 +102,10 @@ def startup(sim_pipe):
             if isinstance(message, str) and message == END_MESSAGE:
                 print('simulation exiting ...')
                 sys.exit(0)
+        for i in range (24 * 7):
+            Loop(dt, position, speed, masse)
 
-
-        Loop(position, speed, masse, dt)
-
-        body_array = np.zeros((len(python_position), 4), dtype=np.float64)
+        body_array = np.zeros((len(position), 4), dtype=np.float64)
         normalization = -11
         
         for body_index in range(len(python_position)):
@@ -113,7 +114,7 @@ def startup(sim_pipe):
             body_array[body_index][2] = position[body_index][2] / 4_498_252_900_000
             body_array[body_index][3] = radius[body_index]
             
-        print(position)            
-        time.sleep(0.1)
+        #print(body_array)            
+        time.sleep(1/60)
 
         sim_pipe.send(body_array)

@@ -1,5 +1,5 @@
 """
-Start simulation and renderer in separate processes connected by a pipe.
+    Global constants for the simulation
 """
 #
 # Copyright (C) 2017  "Peter Roesch" <Peter.Roesch@fh-augsburg.de>
@@ -19,30 +19,5 @@ Start simulation and renderer in separate processes connected by a pipe.
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 # or open http://www.fsf.org/licensing/licenses/gpl.html
 #
-import multiprocessing
-import time
-
-import galaxy_renderer
-import simulation
-from simulation_constants import END_MESSAGE
-
-
-def _startup():
-    renderer_conn, simulation_conn = multiprocessing.Pipe()
-    simulation_process = \
-        multiprocessing.Process(target=simulation.startup,
-                                args=(simulation_conn,))
-    render_process = \
-        multiprocessing.Process(target=galaxy_renderer.startup,
-                                args=(renderer_conn, 60), )
-    simulation_process.start()
-    render_process.start()
-    time.sleep(60 * 10)
-    simulation_conn.send(END_MESSAGE)
-    renderer_conn.send(END_MESSAGE)
-    simulation_process.join()
-    render_process.join()
-
-
-if __name__ == '__main__':
-    _startup()
+# message to signal a process to terminate
+END_MESSAGE = 'End_of_the_universe'

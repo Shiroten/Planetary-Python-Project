@@ -9,7 +9,7 @@ import numpy as np
 cimport cython
 
 @cython.boundscheck(False)
-cpdef Loop (args_iteration, python_position, python_speed, python_masse, pos_list):
+cpdef Loop (args_dt, args_iteration, python_position, python_speed, python_masse, pos_list):
     
     #Umwandeln in Numpy Arrays
     position = np.array(python_position, dtype=np.float64)
@@ -24,7 +24,7 @@ cpdef Loop (args_iteration, python_position, python_speed, python_masse, pos_lis
     cdef double [:] masse_view = masse
 
     #Statische Variable
-    cdef int dt = 60
+    cdef int dt = args_dt
     cdef int number_planets = len(python_position)
     cdef int i, current_planet, planet
     cdef int iteration = args_iteration

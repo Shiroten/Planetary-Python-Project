@@ -9,8 +9,8 @@ import numpy as np
 cimport cython
 
 @cython.boundscheck(False)
-cpdef Loop (position, speed, masse, args_dt):
-
+cpdef Loop (_args_dt, position, speed, masse):
+    
     #Umwandlung in MemoryView
     cdef double [:, :] position_view = position
     cdef double [:, :] speed_view = speed
@@ -19,7 +19,7 @@ cpdef Loop (position, speed, masse, args_dt):
     cdef double [:] masse_view = masse
 
     #Statische Variable
-    cdef int dt = args_dt
+    cdef int dt = _args_dt
     cdef int number_planets = len(position)
     cdef int i, current_planet, planet
     
@@ -29,8 +29,9 @@ cpdef Loop (position, speed, masse, args_dt):
     cdef double [:] single_force = np.array([0,0,0],  dtype=np.float64)
     cdef double [:] all_force = np.array([0,0,0],  dtype=np.float64)
     cdef double [:] acceleration = np.array([0,0,0],  dtype=np.float64)
-      
-    for current_planet in prange (number_planets, nogil=True):                    
+    
+    for current_planet in prange (number_planets, nogil=True):
+
         all_force[0] = 0
         all_force[1] = 0
         all_force[2] = 0
@@ -47,11 +48,9 @@ cpdef Loop (position, speed, masse, args_dt):
         Beschleunigung(all_force, masse_view, current_planet, acceleration)
         update_position(position_view, new_position_view, speed_view, acceleration, dt, current_planet) 
         update_speed(speed_view , new_speed_view, acceleration, dt, current_planet)          
-        
+
     position_view = new_position_view
-    speed_view = new_speed_view          
+    speed_view = new_speed_view
     
-    #position = np.asarray(new_position_view)
-    #speed = np.asarray(new_speed_view)
-    
-    #print(position)
+    position = np.asarray(position_view)
+    speed = np.asarray(speed_view)
