@@ -21,8 +21,7 @@ ext_modules=[ Extension("abstand", ["abstand.pyx"],
              Extension("update_speed", ["update_speed.pyx"],
         extra_compile_args=['-O3'], libraries=['m']),
              Extension("loop", ["loop.pyx"],
-        extra_compile_args=['-O3', '-fopenmp'], libraries=['m'],
-        extra_link_args=['-fopenmp'],)
+        extra_compile_args=['-O3'], libraries=['m'])
         
         #Maybe needed
         #extra_compile_args=['-O3'], libraries=['m'],
