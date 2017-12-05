@@ -35,13 +35,14 @@ cpdef Loop (_args_dt, position, speed, masse):
     cdef double [:, :] all_force = np.zeros((thread_num, 3),  dtype=np.float64)
     cdef double [:, :] acceleration = np.zeros((thread_num, 3),  dtype=np.float64)
     
-    for current_planet in range (number_planets):
+    for current_planet in prange (number_planets, nogil=True):
         id = threadid()
         all_force[id][0] = 0
         all_force[id][1] = 0
         all_force[id][2] = 0
 
-        for planet in prange(number_planets, nogil=True):                
+        for planet in range(number_planets):  
+            
             if (planet != current_planet):
                 Abstand(position_view, distance, planet, current_planet, id)
                 Betrag(distance, magnitude, id)

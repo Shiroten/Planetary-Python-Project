@@ -1040,6 +1040,13 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
 #define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
 #endif
 
+/* NoFastGil.proto */
+#define __Pyx_PyGILState_Ensure PyGILState_Ensure
+#define __Pyx_PyGILState_Release PyGILState_Release
+#define __Pyx_FastGIL_Remember()
+#define __Pyx_FastGIL_Forget()
+#define __Pyx_FastGilFuncInit()
+
 /* IsLittleEndian.proto */
 static CYTHON_INLINE int __Pyx_Is_Little_Endian(void);
 
@@ -1077,13 +1084,6 @@ static CYTHON_INLINE int __pyx_sub_acquisition_count_locked(
 #define __PYX_XDEC_MEMVIEW(slice, have_gil) __Pyx_XDEC_MEMVIEW(slice, have_gil, __LINE__)
 static CYTHON_INLINE void __Pyx_INC_MEMVIEW(__Pyx_memviewslice *, int, int);
 static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *, int, int);
-
-/* NoFastGil.proto */
-#define __Pyx_PyGILState_Ensure PyGILState_Ensure
-#define __Pyx_PyGILState_Release PyGILState_Release
-#define __Pyx_FastGIL_Remember()
-#define __Pyx_FastGIL_Forget()
-#define __Pyx_FastGilFuncInit()
 
 /* ForceInitThreads.proto */
 #ifndef __PYX_FORCE_INIT_THREADS
@@ -1863,10 +1863,10 @@ static PyObject *__pyx_f_4loop_Loop(PyObject *__pyx_v__args_dt, PyObject *__pyx_
   PyObject *__pyx_t_9 = NULL;
   int __pyx_t_10;
   int __pyx_t_11;
-  Py_ssize_t __pyx_t_12;
+  int __pyx_t_12;
   Py_ssize_t __pyx_t_13;
   Py_ssize_t __pyx_t_14;
-  int __pyx_t_15;
+  Py_ssize_t __pyx_t_15;
   int __pyx_t_16;
   int __pyx_t_17;
   Py_ssize_t __pyx_t_18;
@@ -2176,7 +2176,7 @@ static PyObject *__pyx_f_4loop_Loop(PyObject *__pyx_v__args_dt, PyObject *__pyx_
  *     cdef double [:, :] all_force = np.zeros((thread_num, 3),  dtype=np.float64)
  *     cdef double [:, :] acceleration = np.zeros((thread_num, 3),  dtype=np.float64)             # <<<<<<<<<<<<<<
  * 
- *     for current_planet in range (number_planets):
+ *     for current_planet in prange (number_planets, nogil=True):
  */
   __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -2220,47 +2220,96 @@ static PyObject *__pyx_f_4loop_Loop(PyObject *__pyx_v__args_dt, PyObject *__pyx_
   /* "loop.pyx":38
  *     cdef double [:, :] acceleration = np.zeros((thread_num, 3),  dtype=np.float64)
  * 
- *     for current_planet in range (number_planets):             # <<<<<<<<<<<<<<
+ *     for current_planet in prange (number_planets, nogil=True):             # <<<<<<<<<<<<<<
  *         id = threadid()
  *         all_force[id][0] = 0
  */
-  __pyx_t_3 = __pyx_v_number_planets;
-  for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_3; __pyx_t_10+=1) {
-    __pyx_v_current_planet = __pyx_t_10;
+  {
+      #ifdef WITH_THREAD
+      PyThreadState *_save;
+      Py_UNBLOCK_THREADS
+      __Pyx_FastGIL_Remember();
+      #endif
+      /*try:*/ {
+        __pyx_t_3 = __pyx_v_number_planets;
+        if (1 == 0) abort();
+        {
+            int __pyx_parallel_temp0 = ((int)0xbad0bad0);
+            int __pyx_parallel_temp1 = ((int)0xbad0bad0);
+            int __pyx_parallel_temp2 = ((int)0xbad0bad0);
+            const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
+            PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
+            int __pyx_parallel_why;
+            __pyx_parallel_why = 0;
+            #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+                #undef likely
+                #undef unlikely
+                #define likely(x)   (x)
+                #define unlikely(x) (x)
+            #endif
+            __pyx_t_11 = (__pyx_t_3 - 0 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_11 > 0)
+            {
+                #ifdef _OPENMP
+                #pragma omp parallel private(__pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24) firstprivate(__pyx_t_19, __pyx_t_2) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
+                #endif /* _OPENMP */
+                {
+                    #ifdef _OPENMP
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    Py_BEGIN_ALLOW_THREADS
+                    #endif /* _OPENMP */
+                    #ifdef _OPENMP
+                    #pragma omp for firstprivate(__pyx_v_current_planet) lastprivate(__pyx_v_current_planet) lastprivate(__pyx_v_id) lastprivate(__pyx_v_planet)
+                    #endif /* _OPENMP */
+                    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_11; __pyx_t_10++){
+                        if (__pyx_parallel_why < 2)
+                        {
+                            __pyx_v_current_planet = (int)(0 + 1 * __pyx_t_10);
+                            /* Initialize private variables to invalid values */
+                            __pyx_v_id = ((int)0xbad0bad0);
+                            __pyx_v_planet = ((int)0xbad0bad0);
 
-    /* "loop.pyx":39
+                            /* "loop.pyx":39
  * 
- *     for current_planet in range (number_planets):
+ *     for current_planet in prange (number_planets, nogil=True):
  *         id = threadid()             # <<<<<<<<<<<<<<
  *         all_force[id][0] = 0
  *         all_force[id][1] = 0
  */
-    #ifdef _OPENMP
-    __pyx_t_11 = omp_get_thread_num();
-    #else
-    __pyx_t_11 = 0;
-    #endif
-    __pyx_v_id = __pyx_t_11;
+                            #ifdef _OPENMP
+                            __pyx_t_12 = omp_get_thread_num();
+                            #else
+                            __pyx_t_12 = 0;
+                            #endif
+                            __pyx_v_id = __pyx_t_12;
 
-    /* "loop.pyx":40
- *     for current_planet in range (number_planets):
+                            /* "loop.pyx":40
+ *     for current_planet in prange (number_planets, nogil=True):
  *         id = threadid()
  *         all_force[id][0] = 0             # <<<<<<<<<<<<<<
  *         all_force[id][1] = 0
  *         all_force[id][2] = 0
  */
-    __pyx_t_2.data = __pyx_v_all_force.data;
-    __pyx_t_2.memview = __pyx_v_all_force.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_2, 0);
-    {
+                            __pyx_t_2.data = __pyx_v_all_force.data;
+                            __pyx_t_2.memview = __pyx_v_all_force.memview;
+                            __PYX_INC_MEMVIEW(&__pyx_t_2, 0);
+                            {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_id;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_all_force.shape[0];
     Py_ssize_t __pyx_tmp_stride = __pyx_v_all_force.strides[0];
     if (1 && (__pyx_tmp_idx < 0))
         __pyx_tmp_idx += __pyx_tmp_shape;
     if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
         PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
-        __PYX_ERR(0, 40, __pyx_L1_error)
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 40, __pyx_L8_error)
     }
         __pyx_t_2.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2269,32 +2318,38 @@ __pyx_t_2.shape[0] = __pyx_v_all_force.shape[1];
 __pyx_t_2.strides[0] = __pyx_v_all_force.strides[1];
     __pyx_t_2.suboffsets[0] = -1;
 
-__pyx_t_12 = 0;
-    if (__pyx_t_12 < 0) __pyx_t_12 += __pyx_t_2.shape[0];
-    *((double *) ( /* dim=0 */ (__pyx_t_2.data + __pyx_t_12 * __pyx_t_2.strides[0]) )) = 0.0;
-    __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
-    __pyx_t_2.memview = NULL;
-    __pyx_t_2.data = NULL;
+__pyx_t_13 = 0;
+                            if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_t_2.shape[0];
+                            *((double *) ( /* dim=0 */ (__pyx_t_2.data + __pyx_t_13 * __pyx_t_2.strides[0]) )) = 0.0;
+                            __PYX_XDEC_MEMVIEW(&__pyx_t_2, 0);
+                            __pyx_t_2.memview = NULL;
+                            __pyx_t_2.data = NULL;
 
-    /* "loop.pyx":41
+                            /* "loop.pyx":41
  *         id = threadid()
  *         all_force[id][0] = 0
  *         all_force[id][1] = 0             # <<<<<<<<<<<<<<
  *         all_force[id][2] = 0
  * 
  */
-    __pyx_t_2.data = __pyx_v_all_force.data;
-    __pyx_t_2.memview = __pyx_v_all_force.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_2, 0);
-    {
+                            __pyx_t_2.data = __pyx_v_all_force.data;
+                            __pyx_t_2.memview = __pyx_v_all_force.memview;
+                            __PYX_INC_MEMVIEW(&__pyx_t_2, 0);
+                            {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_id;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_all_force.shape[0];
     Py_ssize_t __pyx_tmp_stride = __pyx_v_all_force.strides[0];
     if (1 && (__pyx_tmp_idx < 0))
         __pyx_tmp_idx += __pyx_tmp_shape;
     if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
         PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
-        __PYX_ERR(0, 41, __pyx_L1_error)
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 41, __pyx_L8_error)
     }
         __pyx_t_2.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2303,32 +2358,38 @@ __pyx_t_2.shape[0] = __pyx_v_all_force.shape[1];
 __pyx_t_2.strides[0] = __pyx_v_all_force.strides[1];
     __pyx_t_2.suboffsets[0] = -1;
 
-__pyx_t_13 = 1;
-    if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_t_2.shape[0];
-    *((double *) ( /* dim=0 */ (__pyx_t_2.data + __pyx_t_13 * __pyx_t_2.strides[0]) )) = 0.0;
-    __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
-    __pyx_t_2.memview = NULL;
-    __pyx_t_2.data = NULL;
+__pyx_t_14 = 1;
+                            if (__pyx_t_14 < 0) __pyx_t_14 += __pyx_t_2.shape[0];
+                            *((double *) ( /* dim=0 */ (__pyx_t_2.data + __pyx_t_14 * __pyx_t_2.strides[0]) )) = 0.0;
+                            __PYX_XDEC_MEMVIEW(&__pyx_t_2, 0);
+                            __pyx_t_2.memview = NULL;
+                            __pyx_t_2.data = NULL;
 
-    /* "loop.pyx":42
+                            /* "loop.pyx":42
  *         all_force[id][0] = 0
  *         all_force[id][1] = 0
  *         all_force[id][2] = 0             # <<<<<<<<<<<<<<
  * 
- *         for planet in prange(number_planets, nogil=True):
+ *         for planet in range(number_planets):
  */
-    __pyx_t_2.data = __pyx_v_all_force.data;
-    __pyx_t_2.memview = __pyx_v_all_force.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_2, 0);
-    {
+                            __pyx_t_2.data = __pyx_v_all_force.data;
+                            __pyx_t_2.memview = __pyx_v_all_force.memview;
+                            __PYX_INC_MEMVIEW(&__pyx_t_2, 0);
+                            {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_id;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_all_force.shape[0];
     Py_ssize_t __pyx_tmp_stride = __pyx_v_all_force.strides[0];
     if (1 && (__pyx_tmp_idx < 0))
         __pyx_tmp_idx += __pyx_tmp_shape;
     if (0 && (__pyx_tmp_idx < 0 || __pyx_tmp_idx >= __pyx_tmp_shape)) {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+            #endif
         PyErr_SetString(PyExc_IndexError, "Index out of bounds (axis 0)");
-        __PYX_ERR(0, 42, __pyx_L1_error)
+            #ifdef WITH_THREAD
+            PyGILState_Release(__pyx_gilstate_save);
+            #endif
+        __PYX_ERR(0, 42, __pyx_L8_error)
     }
         __pyx_t_2.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2337,65 +2398,27 @@ __pyx_t_2.shape[0] = __pyx_v_all_force.shape[1];
 __pyx_t_2.strides[0] = __pyx_v_all_force.strides[1];
     __pyx_t_2.suboffsets[0] = -1;
 
-__pyx_t_14 = 2;
-    if (__pyx_t_14 < 0) __pyx_t_14 += __pyx_t_2.shape[0];
-    *((double *) ( /* dim=0 */ (__pyx_t_2.data + __pyx_t_14 * __pyx_t_2.strides[0]) )) = 0.0;
-    __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
-    __pyx_t_2.memview = NULL;
-    __pyx_t_2.data = NULL;
+__pyx_t_15 = 2;
+                            if (__pyx_t_15 < 0) __pyx_t_15 += __pyx_t_2.shape[0];
+                            *((double *) ( /* dim=0 */ (__pyx_t_2.data + __pyx_t_15 * __pyx_t_2.strides[0]) )) = 0.0;
+                            __PYX_XDEC_MEMVIEW(&__pyx_t_2, 0);
+                            __pyx_t_2.memview = NULL;
+                            __pyx_t_2.data = NULL;
 
-    /* "loop.pyx":44
+                            /* "loop.pyx":44
  *         all_force[id][2] = 0
  * 
- *         for planet in prange(number_planets, nogil=True):             # <<<<<<<<<<<<<<
- *             if (planet != current_planet):
- *                 Abstand(position_view, distance, planet, current_planet, id)
- */
-    {
-        #ifdef WITH_THREAD
-        PyThreadState *_save;
-        Py_UNBLOCK_THREADS
-        __Pyx_FastGIL_Remember();
-        #endif
-        /*try:*/ {
-          __pyx_t_11 = __pyx_v_number_planets;
-          if (1 == 0) abort();
-          {
-              int __pyx_parallel_temp0 = ((int)0xbad0bad0);
-              const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
-              PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
-              int __pyx_parallel_why;
-              __pyx_parallel_why = 0;
-              #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
-                  #undef likely
-                  #undef unlikely
-                  #define likely(x)   (x)
-                  #define unlikely(x) (x)
-              #endif
-              __pyx_t_16 = (__pyx_t_11 - 0 + 1 - 1/abs(1)) / 1;
-              if (__pyx_t_16 > 0)
-              {
-                  #ifdef _OPENMP
-                  #pragma omp parallel private(__pyx_t_17, __pyx_t_18, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24) firstprivate(__pyx_t_19, __pyx_t_2) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
-                  #endif /* _OPENMP */
-                  {
-                      #ifdef _OPENMP
-                      #ifdef WITH_THREAD
-                      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                      #endif
-                      Py_BEGIN_ALLOW_THREADS
-                      #endif /* _OPENMP */
-                      #ifdef _OPENMP
-                      #pragma omp for firstprivate(__pyx_v_planet) lastprivate(__pyx_v_planet)
-                      #endif /* _OPENMP */
-                      for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_16; __pyx_t_15++){
-                          if (__pyx_parallel_why < 2)
-                          {
-                              __pyx_v_planet = (int)(0 + 1 * __pyx_t_15);
-
-                              /* "loop.pyx":45
+ *         for planet in range(number_planets):             # <<<<<<<<<<<<<<
  * 
- *         for planet in prange(number_planets, nogil=True):
+ *             if (planet != current_planet):
+ */
+                            __pyx_t_12 = __pyx_v_number_planets;
+                            for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_12; __pyx_t_16+=1) {
+                              __pyx_v_planet = __pyx_t_16;
+
+                              /* "loop.pyx":46
+ *         for planet in range(number_planets):
+ * 
  *             if (planet != current_planet):             # <<<<<<<<<<<<<<
  *                 Abstand(position_view, distance, planet, current_planet, id)
  *                 Betrag(distance, magnitude, id)
@@ -2403,8 +2426,8 @@ __pyx_t_14 = 2;
                               __pyx_t_17 = ((__pyx_v_planet != __pyx_v_current_planet) != 0);
                               if (__pyx_t_17) {
 
-                                /* "loop.pyx":46
- *         for planet in prange(number_planets, nogil=True):
+                                /* "loop.pyx":47
+ * 
  *             if (planet != current_planet):
  *                 Abstand(position_view, distance, planet, current_planet, id)             # <<<<<<<<<<<<<<
  *                 Betrag(distance, magnitude, id)
@@ -2412,7 +2435,7 @@ __pyx_t_14 = 2;
  */
                                 __pyx_f_7abstand_Abstand(__pyx_v_position_view, __pyx_v_distance, __pyx_v_planet, __pyx_v_current_planet, __pyx_v_id);
 
-                                /* "loop.pyx":47
+                                /* "loop.pyx":48
  *             if (planet != current_planet):
  *                 Abstand(position_view, distance, planet, current_planet, id)
  *                 Betrag(distance, magnitude, id)             # <<<<<<<<<<<<<<
@@ -2421,7 +2444,7 @@ __pyx_t_14 = 2;
  */
                                 __pyx_f_6betrag_Betrag(__pyx_v_distance, __pyx_v_magnitude, __pyx_v_id);
 
-                                /* "loop.pyx":48
+                                /* "loop.pyx":49
  *                 Abstand(position_view, distance, planet, current_planet, id)
  *                 Betrag(distance, magnitude, id)
  *                 Kraft(masse_view, distance, magnitude, planet, current_planet, single_force, id)             # <<<<<<<<<<<<<<
@@ -2430,7 +2453,7 @@ __pyx_t_14 = 2;
  */
                                 __pyx_f_5kraft_Kraft(__pyx_v_masse_view, __pyx_v_distance, __pyx_v_magnitude, __pyx_v_planet, __pyx_v_current_planet, __pyx_v_single_force, __pyx_v_id);
 
-                                /* "loop.pyx":49
+                                /* "loop.pyx":50
  *                 Betrag(distance, magnitude, id)
  *                 Kraft(masse_view, distance, magnitude, planet, current_planet, single_force, id)
  *                 all_force[id][0] += single_force[id][0]             # <<<<<<<<<<<<<<
@@ -2454,7 +2477,7 @@ __pyx_t_14 = 2;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 49, __pyx_L12_error)
+        __PYX_ERR(0, 50, __pyx_L8_error)
     }
         __pyx_t_2.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2482,7 +2505,7 @@ __pyx_t_18 = 0;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 49, __pyx_L12_error)
+        __PYX_ERR(0, 50, __pyx_L8_error)
     }
         __pyx_t_19.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2501,7 +2524,7 @@ __pyx_t_20 = 0;
                                 __pyx_t_2.memview = NULL;
                                 __pyx_t_2.data = NULL;
 
-                                /* "loop.pyx":50
+                                /* "loop.pyx":51
  *                 Kraft(masse_view, distance, magnitude, planet, current_planet, single_force, id)
  *                 all_force[id][0] += single_force[id][0]
  *                 all_force[id][1] += single_force[id][1]             # <<<<<<<<<<<<<<
@@ -2525,7 +2548,7 @@ __pyx_t_20 = 0;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 50, __pyx_L12_error)
+        __PYX_ERR(0, 51, __pyx_L8_error)
     }
         __pyx_t_2.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2553,7 +2576,7 @@ __pyx_t_21 = 1;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 50, __pyx_L12_error)
+        __PYX_ERR(0, 51, __pyx_L8_error)
     }
         __pyx_t_19.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2572,7 +2595,7 @@ __pyx_t_22 = 1;
                                 __pyx_t_2.memview = NULL;
                                 __pyx_t_2.data = NULL;
 
-                                /* "loop.pyx":51
+                                /* "loop.pyx":52
  *                 all_force[id][0] += single_force[id][0]
  *                 all_force[id][1] += single_force[id][1]
  *                 all_force[id][2] += single_force[id][2]             # <<<<<<<<<<<<<<
@@ -2596,7 +2619,7 @@ __pyx_t_22 = 1;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 51, __pyx_L12_error)
+        __PYX_ERR(0, 52, __pyx_L8_error)
     }
         __pyx_t_2.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2624,7 +2647,7 @@ __pyx_t_23 = 2;
             #ifdef WITH_THREAD
             PyGILState_Release(__pyx_gilstate_save);
             #endif
-        __PYX_ERR(0, 51, __pyx_L12_error)
+        __PYX_ERR(0, 52, __pyx_L8_error)
     }
         __pyx_t_19.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
@@ -2643,152 +2666,156 @@ __pyx_t_24 = 2;
                                 __pyx_t_2.memview = NULL;
                                 __pyx_t_2.data = NULL;
 
-                                /* "loop.pyx":45
+                                /* "loop.pyx":46
+ *         for planet in range(number_planets):
  * 
- *         for planet in prange(number_planets, nogil=True):
  *             if (planet != current_planet):             # <<<<<<<<<<<<<<
  *                 Abstand(position_view, distance, planet, current_planet, id)
  *                 Betrag(distance, magnitude, id)
  */
                               }
-                              goto __pyx_L16;
-                              __pyx_L12_error:;
-                              {
-                                  #ifdef WITH_THREAD
-                                  PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                                  #endif
-                                  #ifdef _OPENMP
-                                  #pragma omp flush(__pyx_parallel_exc_type)
-                                  #endif /* _OPENMP */
-                                  if (!__pyx_parallel_exc_type) {
-                                    __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
-                                    __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
-                                    __Pyx_GOTREF(__pyx_parallel_exc_type);
-                                  }
-                                  #ifdef WITH_THREAD
-                                  __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                                  #endif
-                              }
-                              __pyx_parallel_why = 4;
-                              goto __pyx_L15;
-                              __pyx_L15:;
-                              #ifdef _OPENMP
-                              #pragma omp critical(__pyx_parallel_lastprivates0)
-                              #endif /* _OPENMP */
-                              {
-                                  __pyx_parallel_temp0 = __pyx_v_planet;
-                              }
-                              __pyx_L16:;
-                              #ifdef _OPENMP
-                              #pragma omp flush(__pyx_parallel_why)
-                              #endif /* _OPENMP */
-                          }
-                      }
-                      #ifdef _OPENMP
-                      Py_END_ALLOW_THREADS
-                      #else
-{
-#ifdef WITH_THREAD
-                      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                      #endif
-                      #endif /* _OPENMP */
-                      /* Clean up any temporaries */
-                      __PYX_XDEC_MEMVIEW(&__pyx_t_19, 0);
-                      __PYX_XDEC_MEMVIEW(&__pyx_t_2, 0);
-                      #ifdef WITH_THREAD
-                      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                      #endif
-                      #ifndef _OPENMP
-}
-#endif /* _OPENMP */
-                  }
-              }
-              if (__pyx_parallel_exc_type) {
-                /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
-                __pyx_parallel_why = 4;
-              }
-              if (__pyx_parallel_why) {
-                __pyx_v_planet = __pyx_parallel_temp0;
-                switch (__pyx_parallel_why) {
-                      case 4:
-                  {
-                      #ifdef WITH_THREAD
-                      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-                      #endif
-                      __Pyx_GIVEREF(__pyx_parallel_exc_type);
-                      __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
-                      __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
-                      #ifdef WITH_THREAD
-                      __Pyx_PyGILState_Release(__pyx_gilstate_save);
-                      #endif
-                  }
-                  goto __pyx_L8_error;
-                }
-              }
-          }
-          #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
-              #undef likely
-              #undef unlikely
-              #define likely(x)   __builtin_expect(!!(x), 1)
-              #define unlikely(x) __builtin_expect(!!(x), 0)
-          #endif
-        }
+                            }
 
-        /* "loop.pyx":44
- *         all_force[id][2] = 0
- * 
- *         for planet in prange(number_planets, nogil=True):             # <<<<<<<<<<<<<<
- *             if (planet != current_planet):
- *                 Abstand(position_view, distance, planet, current_planet, id)
- */
-        /*finally:*/ {
-          /*normal exit:*/{
-            #ifdef WITH_THREAD
-            __Pyx_FastGIL_Forget();
-            Py_BLOCK_THREADS
-            #endif
-            goto __pyx_L9;
-          }
-          __pyx_L8_error: {
-            #ifdef WITH_THREAD
-            __Pyx_FastGIL_Forget();
-            Py_BLOCK_THREADS
-            #endif
-            goto __pyx_L1_error;
-          }
-          __pyx_L9:;
-        }
-    }
-
-    /* "loop.pyx":53
+                            /* "loop.pyx":54
  *                 all_force[id][2] += single_force[id][2]
  * 
  *         Beschleunigung(all_force, masse_view, current_planet, acceleration, id)             # <<<<<<<<<<<<<<
  *         update_position(position_view, new_position_view, speed_view, acceleration, dt, current_planet, id)
  *         update_speed(speed_view , new_speed_view, acceleration, dt, current_planet, id)
  */
-    __pyx_f_14beschleunigung_Beschleunigung(__pyx_v_all_force, __pyx_v_masse_view, __pyx_v_current_planet, __pyx_v_acceleration, __pyx_v_id);
+                            __pyx_f_14beschleunigung_Beschleunigung(__pyx_v_all_force, __pyx_v_masse_view, __pyx_v_current_planet, __pyx_v_acceleration, __pyx_v_id);
 
-    /* "loop.pyx":54
+                            /* "loop.pyx":55
  * 
  *         Beschleunigung(all_force, masse_view, current_planet, acceleration, id)
  *         update_position(position_view, new_position_view, speed_view, acceleration, dt, current_planet, id)             # <<<<<<<<<<<<<<
  *         update_speed(speed_view , new_speed_view, acceleration, dt, current_planet, id)
  * 
  */
-    __pyx_f_15update_position_update_position(__pyx_v_position_view, __pyx_v_new_position_view, __pyx_v_speed_view, __pyx_v_acceleration, __pyx_v_dt, __pyx_v_current_planet, __pyx_v_id);
+                            __pyx_f_15update_position_update_position(__pyx_v_position_view, __pyx_v_new_position_view, __pyx_v_speed_view, __pyx_v_acceleration, __pyx_v_dt, __pyx_v_current_planet, __pyx_v_id);
 
-    /* "loop.pyx":55
+                            /* "loop.pyx":56
  *         Beschleunigung(all_force, masse_view, current_planet, acceleration, id)
  *         update_position(position_view, new_position_view, speed_view, acceleration, dt, current_planet, id)
  *         update_speed(speed_view , new_speed_view, acceleration, dt, current_planet, id)             # <<<<<<<<<<<<<<
  * 
  *     position_view = new_position_view
  */
-    __pyx_f_12update_speed_update_speed(__pyx_v_speed_view, __pyx_v_new_speed_view, __pyx_v_acceleration, __pyx_v_dt, __pyx_v_current_planet, __pyx_v_id);
+                            __pyx_f_12update_speed_update_speed(__pyx_v_speed_view, __pyx_v_new_speed_view, __pyx_v_acceleration, __pyx_v_dt, __pyx_v_current_planet, __pyx_v_id);
+                            goto __pyx_L14;
+                            __pyx_L8_error:;
+                            {
+                                #ifdef WITH_THREAD
+                                PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                                #endif
+                                #ifdef _OPENMP
+                                #pragma omp flush(__pyx_parallel_exc_type)
+                                #endif /* _OPENMP */
+                                if (!__pyx_parallel_exc_type) {
+                                  __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                                  __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                                  __Pyx_GOTREF(__pyx_parallel_exc_type);
+                                }
+                                #ifdef WITH_THREAD
+                                __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                                #endif
+                            }
+                            __pyx_parallel_why = 4;
+                            goto __pyx_L13;
+                            __pyx_L13:;
+                            #ifdef _OPENMP
+                            #pragma omp critical(__pyx_parallel_lastprivates0)
+                            #endif /* _OPENMP */
+                            {
+                                __pyx_parallel_temp0 = __pyx_v_current_planet;
+                                __pyx_parallel_temp1 = __pyx_v_id;
+                                __pyx_parallel_temp2 = __pyx_v_planet;
+                            }
+                            __pyx_L14:;
+                            #ifdef _OPENMP
+                            #pragma omp flush(__pyx_parallel_why)
+                            #endif /* _OPENMP */
+                        }
+                    }
+                    #ifdef _OPENMP
+                    Py_END_ALLOW_THREADS
+                    #else
+{
+#ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    #endif /* _OPENMP */
+                    /* Clean up any temporaries */
+                    __PYX_XDEC_MEMVIEW(&__pyx_t_19, 0);
+                    __PYX_XDEC_MEMVIEW(&__pyx_t_2, 0);
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                    #ifndef _OPENMP
+}
+#endif /* _OPENMP */
+                }
+            }
+            if (__pyx_parallel_exc_type) {
+              /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
+              __pyx_parallel_why = 4;
+            }
+            if (__pyx_parallel_why) {
+              __pyx_v_current_planet = __pyx_parallel_temp0;
+              __pyx_v_id = __pyx_parallel_temp1;
+              __pyx_v_planet = __pyx_parallel_temp2;
+              switch (__pyx_parallel_why) {
+                    case 4:
+                {
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    __Pyx_GIVEREF(__pyx_parallel_exc_type);
+                    __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
+                    __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                }
+                goto __pyx_L4_error;
+              }
+            }
+        }
+        #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+            #undef likely
+            #undef unlikely
+            #define likely(x)   __builtin_expect(!!(x), 1)
+            #define unlikely(x) __builtin_expect(!!(x), 0)
+        #endif
+      }
+
+      /* "loop.pyx":38
+ *     cdef double [:, :] acceleration = np.zeros((thread_num, 3),  dtype=np.float64)
+ * 
+ *     for current_planet in prange (number_planets, nogil=True):             # <<<<<<<<<<<<<<
+ *         id = threadid()
+ *         all_force[id][0] = 0
+ */
+      /*finally:*/ {
+        /*normal exit:*/{
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L5;
+        }
+        __pyx_L4_error: {
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L1_error;
+        }
+        __pyx_L5:;
+      }
   }
 
-  /* "loop.pyx":57
+  /* "loop.pyx":58
  *         update_speed(speed_view , new_speed_view, acceleration, dt, current_planet, id)
  * 
  *     position_view = new_position_view             # <<<<<<<<<<<<<<
@@ -2799,7 +2826,7 @@ __pyx_t_24 = 2;
   __PYX_INC_MEMVIEW(&__pyx_v_new_position_view, 0);
   __pyx_v_position_view = __pyx_v_new_position_view;
 
-  /* "loop.pyx":58
+  /* "loop.pyx":59
  * 
  *     position_view = new_position_view
  *     speed_view = new_speed_view             # <<<<<<<<<<<<<<
@@ -2810,18 +2837,18 @@ __pyx_t_24 = 2;
   __PYX_INC_MEMVIEW(&__pyx_v_new_speed_view, 0);
   __pyx_v_speed_view = __pyx_v_new_speed_view;
 
-  /* "loop.pyx":60
+  /* "loop.pyx":61
  *     speed_view = new_speed_view
  * 
  *     position = np.asarray(position_view)             # <<<<<<<<<<<<<<
  *     speed = np.asarray(speed_view)
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_asarray); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_asarray); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_position_view, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_position_view, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_9))) {
@@ -2834,14 +2861,14 @@ __pyx_t_24 = 2;
     }
   }
   if (!__pyx_t_6) {
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_7);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_9)) {
       PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-      __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -2850,20 +2877,20 @@ __pyx_t_24 = 2;
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_9)) {
       PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_5};
-      __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else
     #endif
     {
-      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 61, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
       __Pyx_GIVEREF(__pyx_t_5);
       PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_8, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_8, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
@@ -2872,17 +2899,17 @@ __pyx_t_24 = 2;
   __Pyx_DECREF_SET(__pyx_v_position, __pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "loop.pyx":61
+  /* "loop.pyx":62
  * 
  *     position = np.asarray(position_view)
  *     speed = np.asarray(speed_view)             # <<<<<<<<<<<<<<
  */
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_asarray); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_asarray); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_v_speed_view, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_v_speed_view, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
@@ -2895,14 +2922,14 @@ __pyx_t_24 = 2;
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 62, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_GOTREF(__pyx_t_7);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_8)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_9};
-      __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -2911,20 +2938,20 @@ __pyx_t_24 = 2;
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_9};
-      __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     } else
     #endif
     {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_GIVEREF(__pyx_t_9);
       PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_9);
       __pyx_t_9 = 0;
-      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 62, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
@@ -16684,7 +16711,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 44, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 131, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 146, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 149, __pyx_L1_error)
