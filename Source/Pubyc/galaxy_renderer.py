@@ -149,6 +149,7 @@ class GalaxyRenderer:
                 self.do_exit = True
             else:
                 self.bodies = pipe_input
+                #print(pipe_input)
                 GLUT.glutPostRedisplay()
         else:
             time.sleep(1 / self.fps)

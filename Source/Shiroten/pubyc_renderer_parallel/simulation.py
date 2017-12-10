@@ -94,7 +94,7 @@ def startup(sim_pipe):
     position = np.array(python_position, dtype=np.float64)
     speed = np.array(python_speed,dtype=np.float64)
     masse = np.array(python_masse,dtype=np.float64)
-    dt = 60 * 60 / 4
+    dt = 60 * 60 * 2
 
     while True:
         if sim_pipe.poll():
@@ -115,6 +115,6 @@ def startup(sim_pipe):
             body_array[body_index][3] = radius[body_index]
             
         #print(body_array)            
-        time.sleep(1/60)
+        #time.sleep(1/60)
 
         sim_pipe.send(body_array)

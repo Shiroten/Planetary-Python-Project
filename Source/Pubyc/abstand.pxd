@@ -1,1 +1,0 @@
-cdef void Abstand (double [:, :], double[:, :], int, int, int) nogil

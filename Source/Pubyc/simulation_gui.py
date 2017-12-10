@@ -79,8 +79,8 @@ class SimulationGUI(QMainWindow):
 
         for _ in range(amount):
             self.pos.append(self.get_random_position())
-            self.mass.append(self.get_random_position())
-            self.rad.append(self.get_random_position())
+            self.mass.append(self.get_random_mass())
+            self.rad.append(self.get_random_radius())
             print('Object', _ + 1, 'done')
 
         print('Calculating speeds')
@@ -179,9 +179,10 @@ class SimulationGUI(QMainWindow):
         print('Loading Solar System')
         # convert to numpy
         self.mass = np.array(python_masse, dtype=np.float64)
-        self.rad = np.array(radius, dtype=np.float64)
+        self.rad = np.array(python_rads, dtype=np.float64)
         self.pos = np.array(python_position, dtype=np.float64)
         self.vel = np.array(python_geschwindigkeit, dtype=np.float64)
+        self.max_size = 4_498_252_900_000
 
         print()
         print('Launch Render and Simulation...')

@@ -9,7 +9,7 @@ import numpy as np
 cimport cython
 
 @cython.boundscheck(False)
-cpdef Loop (args_dt, args_iteration, python_position, python_speed, python_masse, pos_list):
+cpdef Loop (_args_dt, args_iteration, python_position, python_speed, python_masse, pos_list):
     
     #Umwandeln in Numpy Arrays
     position = np.array(python_position, dtype=np.float64)
@@ -24,7 +24,7 @@ cpdef Loop (args_dt, args_iteration, python_position, python_speed, python_masse
     cdef double [:] masse_view = masse
 
     #Statische Variable
-    cdef int dt = args_dt
+    cdef int dt = _args_dt
     cdef int number_planets = len(python_position)
     cdef int i, current_planet, planet
     cdef int iteration = args_iteration
@@ -37,7 +37,7 @@ cpdef Loop (args_dt, args_iteration, python_position, python_speed, python_masse
     cdef double [:] all_force = np.array([0,0,0],  dtype=np.float64)
     cdef double [:] acceleration = np.array([0,0,0],  dtype=np.float64)
     
-    print("finished Memory Allocation")
+    #print("finished Memory Allocation")
             
     for i in range (iteration): 
       
@@ -70,4 +70,4 @@ cpdef Loop (args_dt, args_iteration, python_position, python_speed, python_masse
         
         pos_list.append(np.array(pos_list_entry, np.float64))
             
-    print("Finished Calculation")
+    #print("Finished Calculation")
