@@ -18,15 +18,16 @@ import multiprocessing
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 # or open http://www.fsf.org/licensing/licenses/gpl.html
 #
+
 import sys
 
 import numpy as np
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore, QtGui, uic
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow
 
 import galaxy_renderer
-import helper
+import random
 import simulation
 from simulation_constants import END_MESSAGE
 
@@ -39,18 +40,14 @@ class SimulationGUI(QMainWindow):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
 
-        self.setupUI()
+        # self.setupUI()
+        uic.loadUi('ppp.ui', self)
 
         self.btn_random.clicked.connect(self.start_random)
         self.btn_solar.clicked.connect(self.start_solar)
         self.btn_stop.clicked.connect(self.stop_simulation)
         self.btn_quit.clicked.connect(self.exit_application)
 
-        self.pos = []
-        self.vel = []
-        self.mass = []
-        self.rad = []
-        self.max_size = 100
         self.is_running = False
 
         self.renderer_conn, self.simulation_conn = None, None
@@ -62,44 +59,69 @@ class SimulationGUI(QMainWindow):
         if self.is_running:
             return
 
-        # reset
-        self.max_size = self.size_max.value()
-        self.pos = []
-        self.vel = []
-        self.mass = []
-        self.rad = []
-
-        amount = self.get_amount()
         black_hole = self.do_black_hole()
+        amount = self.get_amount()
+        mass_range = self.get_mass_range()
+        density_range = self.get_density_range()
+        pos_max = self.get_pos_max()
+        max_size = max(pos_max)
 
         print('Generating', amount, 'random objects')
         if black_hole:
             # todo: code
             print('Black Hole done')
 
-        for _ in range(amount):
-            self.pos.append(self.get_random_position())
-            self.mass.append(self.get_random_position())
-            self.rad.append(self.get_random_position())
-            print('Object', _ + 1, 'done')
+        # -------------------------------------------------------
 
-        print('Calculating speeds')
-        self.vel = helper.calc_init_speeds(self.pos, self.mass)
+        pos = np.zeros((amount, 3), np.float64)
+        mass = np.zeros(amount, np.float64)
+        vel = np.zeros((amount, 3), np.float64)
+        rad = np.zeros(amount, np.float64)
 
-        print()
-        print('Launch Render and Simulation...')
-		
-		self.mass = np.array(self.mass, dtype=np.float64)
-        self.rad = np.array(self.rad, dtype=np.float64)
-        self.pos = np.array(self.pos, dtype=np.float64)
-        self.vel = np.array(self.vel, dtype=np.float64)
+        for i in range(amount):
+            pos[i, 0] = random.uniform(-pos_max[0], pos_max[0])
+            pos[i, 1] = random.uniform(-pos_max[1], pos_max[1])
+            pos[i, 2] = random.uniform(-pos_max[2], pos_max[2])
 
+            mass[i] = random.uniform(mass_range[0], mass_range[1])
+            density = random.uniform(density_range[0], density_range[1])
+            vol = mass[i] / density
+            rad[i] = (3 * vol / 4 * 3.141592) ** (1. / 3.)
+
+        z = np.array((0.0, 0.0, 1.0), dtype=np.float64)
+        g = 6.67408e-11
+
+        mass_pos_sum = np.array((0.0, 0.0, 0.0), dtype=np.float64)
+        for i in range(amount):
+            mass_pos_sum += mass[i] * pos[i]
+        total_mass = mass.sum()
+
+        for i in range(amount):
+            my_pos = pos[i]
+            my_mass = mass[i]
+            total_mass_ex = total_mass - my_mass
+            center_ex = (mass_pos_sum - my_mass * my_pos) / total_mass_ex
+
+            # skalar Geschwindigkeit
+            r = np.linalg.norm(my_pos - center_ex)
+            vel_scalar = (total_mass_ex / total_mass) * np.sqrt(g * total_mass / r)
+
+            # gerichtet
+            top = np.cross((my_pos - center_ex), z)
+            bottom = np.linalg.norm(top)
+            vel[i] = top / bottom * vel_scalar
+
+        # -------------------------------------------------------
+
+        for j in range(pos.__len__()):
+            print(pos[j], mass[j], vel[j], rad[j])
+            
         self.renderer_conn, self.simulation_conn = multiprocessing.Pipe()
         self.simulation_process = multiprocessing.Process(
             target=simulation.startup,
             args=(
                 self.simulation_conn,
-                self.pos, self.vel, self.mass, self.rad, self.max_size
+                pos, vel, mass, rad, max_size
             )
         )
         self.render_process = multiprocessing.Process(
@@ -162,12 +184,27 @@ class SimulationGUI(QMainWindow):
             24_764_000  # "Neptune"
         ]
 
+        FACTOR = 0.1
+        radius = [
+            0.25 * FACTOR,
+            0.02 * FACTOR,
+            0.06 * FACTOR,
+            0.06 * FACTOR,
+            0.01 * FACTOR,
+            0.03 * FACTOR,
+            0.18 * FACTOR,
+            0.15 * FACTOR,
+            0.1 * FACTOR,
+            0.1 * FACTOR
+        ]
+
         print('Loading Solar System')
-		# convert to numpy
-        self.mass = np.array(python_masse, dtype=np.float64)
-        self.rad = np.array(python_rads, dtype=np.float64)
-        self.pos = np.array(python_position, dtype=np.float64)
-        self.vel = np.array(python_geschwindigkeit, dtype=np.float64)
+        # convert to numpy
+        mass = np.array(python_masse, dtype=np.float64)
+        rad = np.array(python_rads, dtype=np.float64)
+        pos = np.array(python_position, dtype=np.float64)
+        vel = np.array(python_geschwindigkeit, dtype=np.float64)
+        max_size = 4_498_252_900_000
 
         print()
         print('Launch Render and Simulation...')
@@ -177,7 +214,7 @@ class SimulationGUI(QMainWindow):
             target=simulation.startup,
             args=(
                 self.simulation_conn,
-                self.pos, self.vel, self.mass, self.rad, self.max_size
+                pos, vel, mass, rad, max_size
             )
         )
         self.render_process = multiprocessing.Process(
@@ -188,27 +225,6 @@ class SimulationGUI(QMainWindow):
         self.render_process.start()
         self.is_running = True
         pass
-
-    '''
-    def start_simulation(self):
-        """
-        Start simulation and render process connected with a pipe.
-        """
-        self.renderer_conn, self.simulation_conn = multiprocessing.Pipe()
-        self.simulation_process = multiprocessing.Process(
-            target=simulation.startup,
-            args=(
-                self.simulation_conn,
-                self.pos, self.vel, self.mass, self.rad, self.max_size
-            )
-        )
-        self.render_process = multiprocessing.Process(
-            target=galaxy_renderer.startup,
-            args=(self.renderer_conn, 60),
-        )
-        self.simulation_process.start()
-        self.render_process.start()
-    '''
 
     def stop_simulation(self):
         """
@@ -232,188 +248,29 @@ class SimulationGUI(QMainWindow):
         self.stop_simulation()
         self.close()
 
-    def get_random_mass(self):
-        mini = self.mass_min.value()
-        maxi = self.mass_max.value()
-        return helper.random_int(mini, maxi)
+    def get_mass_range(self):
+        mini = eval(self.mass_min.text())
+        maxi = eval(self.mass_max.text())
+        return mini, maxi
 
-    def get_random_radius(self):
-        mini = self.rad_min.value()
-        maxi = self.rad_max.value()
-        return helper.random_int(mini, maxi)
+    def get_density_range(self):
+        mini = eval(self.density_min.text())
+        maxi = eval(self.density_max.text())
+        return mini, maxi
 
-    def get_random_position(self):
-        size = self.size_max.value()
-        return helper.random_numpy(0, size)
+    def get_pos_max(self):
+        x = eval(self.size_x.text())
+        y = eval(self.size_y.text())
+        z = eval(self.size_z.text())
+        return x, y, z
 
     def get_amount(self):
-        return self.number.value()
+        return self.amount.value()
 
     def do_black_hole(self):
         return self.black_hole.isChecked()
 
-    def setupUI(self):
-        self.setGeometry(100, 100, 260, 200)
-        self.setWindowTitle('PPP')
-        self.resize(471, 250)
-        icon = QIcon()
-        icon.addPixmap(QtGui.QPixmap("ppp.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
-
-        self.centralwidget = QtWidgets.QWidget()
-        self.centralwidget.setObjectName("centralwidget")
-        self.group_other = QtWidgets.QGroupBox(self.centralwidget)
-        self.group_other.setGeometry(QtCore.QRect(10, 130, 261, 111))
-        self.group_other.setObjectName("group_other")
-        self.label_4 = QtWidgets.QLabel(self.group_other)
-        self.label_4.setGeometry(QtCore.QRect(10, 20, 81, 20))
-        self.label_4.setObjectName("label_4")
-        self.black_hole = QtWidgets.QCheckBox(self.group_other)
-        self.black_hole.setGeometry(QtCore.QRect(10, 80, 151, 21))
-        self.black_hole.setObjectName("black_hole")
-        self.size_max = QtWidgets.QDoubleSpinBox(self.group_other)
-        self.size_max.setGeometry(QtCore.QRect(90, 20, 161, 22))
-        self.size_max.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.size_max.setDecimals(0)
-        self.size_max.setMinimum(10000.0)
-        self.size_max.setMaximum(1e+19)
-        self.size_max.setSingleStep(10000.0)
-        self.size_max.setProperty("value", 3000000000000.0)
-        self.size_max.setObjectName("size_max")
-        self.label_5 = QtWidgets.QLabel(self.group_other)
-        self.label_5.setGeometry(QtCore.QRect(10, 50, 81, 20))
-        self.label_5.setObjectName("label_5")
-        self.number = QtWidgets.QSpinBox(self.group_other)
-        self.number.setGeometry(QtCore.QRect(90, 50, 61, 22))
-        self.number.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.number.setMinimum(0)
-        self.number.setMaximum(9999)
-        self.number.setProperty("value", 20)
-        self.number.setObjectName("number")
-        self.btn_solar = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_solar.setGeometry(QtCore.QRect(380, 130, 81, 71))
-        self.btn_solar.setObjectName("btn_solar")
-        self.group_mass = QtWidgets.QGroupBox(self.centralwidget)
-        self.group_mass.setGeometry(QtCore.QRect(10, 10, 261, 111))
-        self.group_mass.setObjectName("group_mass")
-        self.label = QtWidgets.QLabel(self.group_mass)
-        self.label.setGeometry(QtCore.QRect(10, 20, 31, 21))
-        self.label.setObjectName("label")
-        self.label_3 = QtWidgets.QLabel(self.group_mass)
-        self.label_3.setGeometry(QtCore.QRect(10, 50, 31, 21))
-        self.label_3.setObjectName("label_3")
-        self.mass_min = QtWidgets.QDoubleSpinBox(self.group_mass)
-        self.mass_min.setGeometry(QtCore.QRect(40, 20, 211, 22))
-        self.mass_min.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.mass_min.setDecimals(0)
-        self.mass_min.setMinimum(1.0)
-        self.mass_min.setMaximum(10000000000000.0)
-        self.mass_min.setSingleStep(1000.0)
-        self.mass_min.setProperty("value", 1.0)
-        self.mass_min.setObjectName("mass_min")
-        self.mass_max = QtWidgets.QDoubleSpinBox(self.group_mass)
-        self.mass_max.setGeometry(QtCore.QRect(40, 50, 211, 22))
-        self.mass_max.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.mass_max.setDecimals(0)
-        self.mass_max.setMinimum(1.0)
-        self.mass_max.setMaximum(10000000000000.0)
-        self.mass_max.setSingleStep(1000.0)
-        self.mass_max.setProperty("value", 200000.0)
-        self.mass_max.setObjectName("mass_max")
-        self.mass_xten = QtWidgets.QSpinBox(self.group_mass)
-        self.mass_xten.setGeometry(QtCore.QRect(190, 80, 61, 22))
-        self.mass_xten.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.mass_xten.setMinimum(0)
-        self.mass_xten.setMaximum(9999)
-        self.mass_xten.setProperty("value", 20)
-        self.mass_xten.setObjectName("mass_xten")
-        self.label_2 = QtWidgets.QLabel(self.group_mass)
-        self.label_2.setGeometry(QtCore.QRect(140, 80, 51, 21))
-        self.label_2.setObjectName("label_2")
-        self.group_rad = QtWidgets.QGroupBox(self.centralwidget)
-        self.group_rad.setGeometry(QtCore.QRect(280, 10, 181, 111))
-        self.group_rad.setObjectName("group_rad")
-        self.label_6 = QtWidgets.QLabel(self.group_rad)
-        self.label_6.setGeometry(QtCore.QRect(10, 20, 31, 21))
-        self.label_6.setObjectName("label_6")
-        self.label_7 = QtWidgets.QLabel(self.group_rad)
-        self.label_7.setGeometry(QtCore.QRect(10, 50, 31, 21))
-        self.label_7.setObjectName("label_7")
-        self.rad_min = QtWidgets.QDoubleSpinBox(self.group_rad)
-        self.rad_min.setGeometry(QtCore.QRect(40, 20, 131, 22))
-        self.rad_min.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.rad_min.setDecimals(0)
-        self.rad_min.setMinimum(1.0)
-        self.rad_min.setMaximum(10000000000.0)
-        self.rad_min.setSingleStep(1.0)
-        self.rad_min.setProperty("value", 1000.0)
-        self.rad_min.setObjectName("rad_min")
-        self.rad_max = QtWidgets.QDoubleSpinBox(self.group_rad)
-        self.rad_max.setGeometry(QtCore.QRect(40, 50, 131, 22))
-        self.rad_max.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.rad_max.setDecimals(0)
-        self.rad_max.setMinimum(1.0)
-        self.rad_max.setMaximum(10000000000.0)
-        self.rad_max.setSingleStep(1.0)
-        self.rad_max.setProperty("value", 700000.0)
-        self.rad_max.setObjectName("rad_max")
-        self.rad_xten = QtWidgets.QSpinBox(self.group_rad)
-        self.rad_xten.setGeometry(QtCore.QRect(110, 80, 61, 22))
-        self.rad_xten.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.rad_xten.setMinimum(0)
-        self.rad_xten.setMaximum(9999)
-        self.rad_xten.setProperty("value", 3)
-        self.rad_xten.setObjectName("rad_xten")
-        self.label_8 = QtWidgets.QLabel(self.group_rad)
-        self.label_8.setGeometry(QtCore.QRect(57, 80, 51, 21))
-        self.label_8.setObjectName("label_8")
-        self.btn_random = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_random.setEnabled(True)
-        self.btn_random.setGeometry(QtCore.QRect(280, 130, 91, 71))
-        self.btn_random.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
-        self.btn_random.setObjectName("btn_random")
-        self.btn_stop = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_stop.setEnabled(True)
-        self.btn_stop.setGeometry(QtCore.QRect(280, 210, 91, 31))
-        self.btn_stop.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
-        self.btn_stop.setObjectName("btn_stop")
-        self.btn_quit = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_quit.setEnabled(True)
-        self.btn_quit.setGeometry(QtCore.QRect(380, 210, 81, 31))
-        self.btn_quit.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
-        self.btn_quit.setObjectName("btn_quit")
-        self.setCentralWidget(self.centralwidget)
-
-        _translate = QtCore.QCoreApplication.translate
-        self.group_other.setTitle(_translate("MainWindow", "Andere Werte"))
-        self.label_4.setText(_translate("MainWindow", "Raumgröße (m)"))
-        self.black_hole.setText(_translate("MainWindow", "Schwarzes Loch im Zentrum"))
-        self.label_5.setText(_translate("MainWindow", "Anzahl Körper"))
-        self.btn_solar.setText(_translate("MainWindow", "Sonnen\nSystem"))
-        self.group_mass.setTitle(_translate("MainWindow", "Masse (kg)"))
-        self.label.setText(_translate("MainWindow", "min"))
-        self.label_3.setText(_translate("MainWindow", "max"))
-        self.label_2.setText(_translate("MainWindow", "x 10 hoch"))
-        self.group_rad.setTitle(_translate("MainWindow", "Radien (m)"))
-        self.label_6.setText(_translate("MainWindow", "min"))
-        self.label_7.setText(_translate("MainWindow", "max"))
-        self.label_8.setText(_translate("MainWindow", "x 10 hoch"))
-        self.btn_random.setText(_translate("MainWindow", "Zufällige \nErstellen"))
-        self.btn_stop.setText(_translate("MainWindow", "Stoppen"))
-        self.btn_quit.setText(_translate("MainWindow", "Quit"))
-
-        self.setTabOrder(self.mass_min, self.mass_max)
-        self.setTabOrder(self.mass_max, self.mass_xten)
-        self.setTabOrder(self.mass_xten, self.rad_min)
-        self.setTabOrder(self.rad_min, self.rad_max)
-        self.setTabOrder(self.rad_max, self.rad_xten)
-        self.setTabOrder(self.rad_xten, self.size_max)
-        self.setTabOrder(self.size_max, self.number)
-        self.setTabOrder(self.number, self.black_hole)
-        self.setTabOrder(self.black_hole, self.btn_random)
-        self.setTabOrder(self.btn_random, self.btn_solar)
-
-
+        
 def _main(argv):
     """
     Main function to avoid pylint complains concerning constant names.
