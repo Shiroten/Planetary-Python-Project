@@ -1,46 +1,60 @@
 import math
 import sys
 import time
+import datetime
 
 import numpy as np
+from simulation_engine import single_step
 
 from simulation_constants import END_MESSAGE
 
-__FPS = 60
-__DELTA_ALPHA = 0.01
 
+def startup(sim_pipe, pos, vel, mass, rad, max_size, log, dt):
 
-def _move_bodies(bodies, delta_t):
-    for body_index, body in enumerate(bodies):
-        j = len(bodies) - body_index
-        sin_a = math.sin(__DELTA_ALPHA * j * delta_t)
-        cos_a = math.cos(__DELTA_ALPHA * j * delta_t)
-        pos_x = body[0]
-        pos_y = body[1]
-        body[0] = pos_x * cos_a - pos_y * sin_a
-        body[1] = pos_x * sin_a + pos_y * cos_a
-    # time.sleep(1 / __FPS)
+    position = np.array(pos, dtype=np.float64)
+    speed = np.array(vel,dtype=np.float64)
+    masse = np.array(mass,dtype=np.float64)
+    dt = dt
+    log = log
 
-
-def _initialise_bodies(nr_of_bodies):
-    body_array = np.zeros((nr_of_bodies, 4), dtype=np.float64)
-    for body_index in range(nr_of_bodies):
-        body_array[body_index][0] = 0.9 / (nr_of_bodies - body_index)
-        body_array[body_index][3] = 0.1 * body_array[body_index][0]
-    return body_array
-
-
-def startup(sim_pipe, pos, vel, mass, rad, max_size):
-    # TODO: init here
-    bodies = _initialise_bodies(15)
-
+    
+    cnt = 0
+    timer = datetime.datetime.now()
+    
     while True:
         if sim_pipe.poll():
             message = sim_pipe.recv()
-            if isinstance(message, str) and message == END_MESSAGE:
-                print('simulation exiting ...')
-                sys.exit(0)
-        else:
-            # TODO: simulate here
-            _move_bodies(bodies, 1)
-            sim_pipe.send(bodies)
+            if isinstance(message, str):
+                if 'LOGN' in message:
+                    log_n = float(message[5:])
+                    print('Set log:', log_n)
+                elif 'TIME' in message:
+                    delta_t = float(message[5:])
+                    print('Set delta time:', delta_t)
+                elif message == END_MESSAGE:
+                    print('simulation exiting ...')
+                    sys.exit(0)
+        
+        for i in range (24 * 7):
+            single_step(dt, position, speed, masse)
+
+        body_array = np.zeros((len(position), 4), dtype=np.float64)
+        normalization = -11
+        max_rad = max(rad)
+        
+        for body_index in range(len(position)):
+            body_array[body_index][0] = position[body_index][0] / max_size
+            body_array[body_index][1] = position[body_index][1] / max_size
+            body_array[body_index][2] = position[body_index][2] / max_size
+            body_array[body_index][3] = rad[body_index] / max_rad / 10
+            
+        #print(body_array)            
+        time.sleep(1/60)
+
+        sim_pipe.send(body_array)
+        
+        cnt = (cnt + 1) % 50
+        timer_end = datetime.datetime.now()
+        if cnt == 1:
+            print(timer_end - timer)
+        timer = timer_end
