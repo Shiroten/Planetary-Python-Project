@@ -32,7 +32,8 @@ def startup(sim_pipe, pos, vel, mass, rad, max_size):
             body_array[body_index][0] = position[body_index][0] / max_size
             body_array[body_index][1] = position[body_index][1] / max_size
             body_array[body_index][2] = position[body_index][2] / max_size
-            body_array[body_index][3] = rad[body_index] / max_rad / 10
+            body_array[body_index][3] = 0.05
+            #body_array[body_index][3] = rad[body_index] / max_rad / 10
             
         #print(body_array)            
         time.sleep(1/60)
