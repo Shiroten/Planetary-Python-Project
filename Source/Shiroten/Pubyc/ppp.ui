@@ -3,14 +3,17 @@
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="enabled">
+   <bool>true</bool>
   </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>331</width>
-    <height>297</height>
+    <height>301</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,11 +22,23 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>331</width>
+    <height>301</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>331</width>
+    <height>301</height>
+   </size>
+  </property>
   <property name="contextMenuPolicy">
    <enum>Qt::NoContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>PPP</string>
+   <string>TetraSIM</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -31,22 +46,6 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/*
-	Copyright 2013 Emanuel Claesson
-
-	Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-
-		http://www.apache.org/licenses/LICENSE-2.0
-
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
-*/
-
-/*
 	COLOR_DARK     = #191919
 	COLOR_MEDIUM   = #353535
 	COLOR_MEDLIGHT = #5A5A5A
@@ -312,6 +311,15 @@ QMenu::separator {
 	background: #353535;
 }</string>
   </property>
+  <property name="animated">
+   <bool>false</bool>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="other_box">
     <property name="geometry">
@@ -357,7 +365,7 @@ QMenu::separator {
       <number>9999</number>
      </property>
      <property name="value">
-      <number>20</number>
+      <number>500</number>
      </property>
     </widget>
     <widget class="QLineEdit" name="size_y">
@@ -370,7 +378,7 @@ QMenu::separator {
       </rect>
      </property>
      <property name="text">
-      <string>10**9</string>
+      <string>10**11</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -386,7 +394,7 @@ QMenu::separator {
       </rect>
      </property>
      <property name="text">
-      <string>3*10**8</string>
+      <string>3*10**10</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -402,7 +410,7 @@ QMenu::separator {
       </rect>
      </property>
      <property name="text">
-      <string>10**9</string>
+      <string>10**11</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -467,10 +475,10 @@ QMenu::separator {
    <widget class="QPushButton" name="btn_solar">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>240</y>
+      <x>150</x>
+      <y>230</y>
       <width>121</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
@@ -526,7 +534,7 @@ laden</string>
       </rect>
      </property>
      <property name="text">
-      <string>10**23</string>
+      <string>10**20</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -542,7 +550,7 @@ laden</string>
       </rect>
      </property>
      <property name="text">
-      <string>10**26</string>
+      <string>10**24</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -555,10 +563,10 @@ laden</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>240</y>
+      <x>10</x>
+      <y>230</y>
       <width>131</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="contextMenuPolicy">
@@ -575,7 +583,7 @@ Erstellen</string>
       <x>10</x>
       <y>170</y>
       <width>311</width>
-      <height>61</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="title">
@@ -586,12 +594,37 @@ Erstellen</string>
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>291</width>
-       <height>31</height>
+       <width>191</width>
+       <height>20</height>
       </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>20</number>
+     </property>
+     <property name="value">
+      <number>3</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="delta_t">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>20</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>3600</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
@@ -669,10 +702,10 @@ Erstellen</string>
    <widget class="QPushButton" name="btn_stop">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>240</y>
+      <x>280</x>
+      <y>230</y>
       <width>41</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -682,7 +715,7 @@ Erstellen</string>
    <widget class="QPushButton" name="btn_quit">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>280</x>
       <y>270</y>
       <width>41</width>
       <height>21</height>
@@ -695,10 +728,20 @@ Erstellen</string>
   </widget>
  </widget>
  <tabstops>
+  <tabstop>mass_min</tabstop>
+  <tabstop>mass_max</tabstop>
+  <tabstop>density_min</tabstop>
+  <tabstop>density_max</tabstop>
+  <tabstop>size_x</tabstop>
+  <tabstop>size_y</tabstop>
+  <tabstop>size_z</tabstop>
   <tabstop>amount</tabstop>
   <tabstop>black_hole</tabstop>
+  <tabstop>log_slider</tabstop>
   <tabstop>btn_random</tabstop>
   <tabstop>btn_solar</tabstop>
+  <tabstop>btn_stop</tabstop>
+  <tabstop>btn_quit</tabstop>
  </tabstops>
  <resources/>
  <connections/>

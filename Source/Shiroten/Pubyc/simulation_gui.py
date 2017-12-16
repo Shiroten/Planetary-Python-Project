@@ -39,9 +39,8 @@ class SimulationGUI(QMainWindow):
 
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
-
-        # self.setupUI()
         uic.loadUi('ppp.ui', self)
+        self.setWindowTitle('PPP')
 
         self.btn_random.clicked.connect(self.start_random)
         self.btn_solar.clicked.connect(self.start_solar)
@@ -49,7 +48,9 @@ class SimulationGUI(QMainWindow):
         self.btn_quit.clicked.connect(self.exit_application)
 
         self.is_running = False
-
+        self.log_slider.valueChanged.connect(self.send_log)
+        self.delta_t.textChanged.connect(self.send_delta_t)
+        
         self.renderer_conn, self.simulation_conn = None, None
         self.render_process = None
         self.simulation_process = None
@@ -67,9 +68,6 @@ class SimulationGUI(QMainWindow):
         max_size = max(pos_max)
 
         print('Generating', amount, 'random objects')
-        if black_hole:
-            # todo: code
-            print('Black Hole done')
 
         # -------------------------------------------------------
 
@@ -85,11 +83,21 @@ class SimulationGUI(QMainWindow):
 
             mass[i] = random.uniform(mass_range[0], mass_range[1])
             density = random.uniform(density_range[0], density_range[1])
-            vol = mass[i] / density
-            rad[i] = (3 * vol / 4 * 3.141592) ** (1. / 3.)
+            rad[i] = (3 * (mass[i] / density) / 4 * 3.141592) ** (1. / 3.)
 
         z = np.array((0.0, 0.0, 1.0), dtype=np.float64)
         g = 6.67408e-11
+
+        if black_hole:
+            # replace first with black hole
+            vel[0, 0] = 0.0
+            vel[0, 1] = 0.0
+            vel[0, 2] = 0.0
+            pos[0, 0] = 0.0
+            pos[0, 1] = 0.0
+            pos[0, 2] = 0.0
+            mass[0] = mass_range[1] * 4_000
+            rad[0] = (3 * (mass[0] / 1000.0) / 4 * 3.141592) ** (1. / 3.)
 
         mass_pos_sum = np.array((0.0, 0.0, 0.0), dtype=np.float64)
         for i in range(amount):
@@ -121,7 +129,7 @@ class SimulationGUI(QMainWindow):
             target=simulation.startup,
             args=(
                 self.simulation_conn,
-                pos, vel, mass, rad, max_size
+                pos, vel, mass, rad, max_size, self.get_log(), self.get_delta_t()
             )
         )
         self.render_process = multiprocessing.Process(
@@ -214,7 +222,7 @@ class SimulationGUI(QMainWindow):
             target=simulation.startup,
             args=(
                 self.simulation_conn,
-                pos, vel, mass, rad, max_size
+                pos, vel, mass, rad, max_size, self.get_log(), self.get_delta_t()
             )
         )
         self.render_process = multiprocessing.Process(
@@ -240,7 +248,7 @@ class SimulationGUI(QMainWindow):
             self.render_process = None
 
         self.is_running = False
-
+        
     def exit_application(self):
         """
         Stop simulation and exit.
@@ -270,11 +278,27 @@ class SimulationGUI(QMainWindow):
     def do_black_hole(self):
         return self.black_hole.isChecked()
 
+    def get_delta_t(self):
+        try:
+            return float(self.delta_t.text())
+        except ValueError:
+            return 60.0 * 60.0
+
+    def get_log(self):
+        return float(self.log_slider.value())
+        
+    def send_log(self):
+        print('send log')
+        if self.simulation_process is not None:
+            self.renderer_conn.send('LOGN:' + str(self.get_log()))
+
+    def send_delta_t(self):
+        print('send delta')
+        if self.simulation_process is not None:
+            self.renderer_conn.send('TIME:' + str(self.get_delta_t()))
+
         
 def _main(argv):
-    """
-    Main function to avoid pylint complains concerning constant names.
-    """
     app = QtWidgets.QApplication(argv)
     simulation_gui = SimulationGUI()
     simulation_gui.show()
