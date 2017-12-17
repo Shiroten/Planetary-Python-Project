@@ -10,14 +10,11 @@ def worker_single_planet(job_queue, result_queue):
         position = args [1]
         speed = args [2]
         mass = args [3]
-        lower_planet_index = args [4]
-        upper_planet_index = args [5]
+        current_planet = args [4]
 
-        result = single_planet(dt, position, speed, mass, lower_planet_index, upper_planet_index)
-        
-        for result_tuple in result:
-            result_queue.put(result_tuple)
-        
+        result = single_planet(dt, position, speed, mass, current_planet)
+
+        result_queue.put(result)
         job_queue.task_done()
 
         
