@@ -1130,12 +1130,12 @@ static const char __pyx_k_task_done[] = "task_done";
 static const char __pyx_k_PubycWorker[] = "PubycWorker";
 static const char __pyx_k_TaskManager[] = "TaskManager";
 static const char __pyx_k_result_queue[] = "result_queue";
+static const char __pyx_k_result_tuple[] = "result_tuple";
 static const char __pyx_k_get_job_queue[] = "get_job_queue";
 static const char __pyx_k_server_socket[] = "server_socket";
 static const char __pyx_k_single_planet[] = "single_planet";
 static const char __pyx_k_start_workers[] = "start_workers";
 static const char __pyx_k_PubycWorker_py[] = "PubycWorker.py";
-static const char __pyx_k_current_planet[] = "current_planet";
 static const char __pyx_k_multiprocessing[] = "multiprocessing";
 static const char __pyx_k_nr_of_processes[] = "nr_of_processes";
 static const char __pyx_k_workers_started[] = "workers started";
@@ -1143,6 +1143,8 @@ static const char __pyx_k_PubycTaskManager[] = "PubycTaskManager";
 static const char __pyx_k_get_result_queue[] = "get_result_queue";
 static const char __pyx_k_PubycWorkerEngine[] = "PubycWorkerEngine";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_lower_planet_index[] = "lower_planet_index";
+static const char __pyx_k_upper_planet_index[] = "upper_planet_index";
 static const char __pyx_k_worker_single_planet[] = "worker_single_planet";
 static const char __pyx_k_server_IP_server_socket[] = "server_IP server_socket";
 static PyObject *__pyx_n_s_Process;
@@ -1158,7 +1160,6 @@ static PyObject *__pyx_n_s_authkey;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_connect;
 static PyObject *__pyx_n_s_cpu_count;
-static PyObject *__pyx_n_s_current_planet;
 static PyObject *__pyx_n_s_dt;
 static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_exit;
@@ -1169,6 +1170,7 @@ static PyObject *__pyx_n_s_get_result_queue;
 static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_job_queue;
+static PyObject *__pyx_n_s_lower_planet_index;
 static PyObject *__pyx_n_s_m;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_mass;
@@ -1184,6 +1186,7 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_register;
 static PyObject *__pyx_n_s_result;
 static PyObject *__pyx_n_s_result_queue;
+static PyObject *__pyx_n_s_result_tuple;
 static PyObject *__pyx_n_b_secret;
 static PyObject *__pyx_kp_s_server_IP_server_socket;
 static PyObject *__pyx_n_s_server_ip;
@@ -1196,6 +1199,7 @@ static PyObject *__pyx_n_s_sys;
 static PyObject *__pyx_n_s_target;
 static PyObject *__pyx_n_s_task_done;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_upper_planet_index;
 static PyObject *__pyx_kp_s_usage;
 static PyObject *__pyx_n_s_worker_single_planet;
 static PyObject *__pyx_kp_s_workers_started;
@@ -1286,8 +1290,10 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
   PyObject *__pyx_v_position = NULL;
   PyObject *__pyx_v_speed = NULL;
   PyObject *__pyx_v_mass = NULL;
-  PyObject *__pyx_v_current_planet = NULL;
+  PyObject *__pyx_v_lower_planet_index = NULL;
+  PyObject *__pyx_v_upper_planet_index = NULL;
   PyObject *__pyx_v_result = NULL;
+  PyObject *__pyx_v_result_tuple = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1295,6 +1301,9 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
+  Py_ssize_t __pyx_t_6;
+  PyObject *(*__pyx_t_7)(PyObject *);
+  PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("worker_single_planet", 0);
 
   /* "PubycWorker.py":6
@@ -1365,7 +1374,7 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
  *         position = args [1]
  *         speed = args [2]             # <<<<<<<<<<<<<<
  *         mass = args [3]
- *         current_planet = args [4]
+ *         lower_planet_index = args [4]
  */
     __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_args, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -1376,8 +1385,8 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
  *         position = args [1]
  *         speed = args [2]
  *         mass = args [3]             # <<<<<<<<<<<<<<
- *         current_planet = args [4]
- * 
+ *         lower_planet_index = args [4]
+ *         upper_planet_index = args [5]
  */
     __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_args, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -1387,23 +1396,35 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
     /* "PubycWorker.py":13
  *         speed = args [2]
  *         mass = args [3]
- *         current_planet = args [4]             # <<<<<<<<<<<<<<
+ *         lower_planet_index = args [4]             # <<<<<<<<<<<<<<
+ *         upper_planet_index = args [5]
  * 
- *         result = single_planet(dt, position, speed, mass, current_planet)
  */
     __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_args, 4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_XDECREF_SET(__pyx_v_current_planet, __pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_lower_planet_index, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":15
- *         current_planet = args [4]
+    /* "PubycWorker.py":14
+ *         mass = args [3]
+ *         lower_planet_index = args [4]
+ *         upper_planet_index = args [5]             # <<<<<<<<<<<<<<
  * 
- *         result = single_planet(dt, position, speed, mass, current_planet)             # <<<<<<<<<<<<<<
- * 
- *         result_queue.put(result)
+ *         result = single_planet(dt, position, speed, mass, lower_planet_index, upper_planet_index)
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_single_planet); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_args, 5, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_upper_planet_index, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "PubycWorker.py":16
+ *         upper_planet_index = args [5]
+ * 
+ *         result = single_planet(dt, position, speed, mass, lower_planet_index, upper_planet_index)             # <<<<<<<<<<<<<<
+ * 
+ *         for result_tuple in result:
+ */
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_single_planet); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 16, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_4 = 0;
@@ -1419,22 +1440,22 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[6] = {__pyx_t_3, __pyx_v_dt, __pyx_v_position, __pyx_v_speed, __pyx_v_mass, __pyx_v_current_planet};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 5+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+      PyObject *__pyx_temp[7] = {__pyx_t_3, __pyx_v_dt, __pyx_v_position, __pyx_v_speed, __pyx_v_mass, __pyx_v_lower_planet_index, __pyx_v_upper_planet_index};
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 6+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[6] = {__pyx_t_3, __pyx_v_dt, __pyx_v_position, __pyx_v_speed, __pyx_v_mass, __pyx_v_current_planet};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 5+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+      PyObject *__pyx_temp[7] = {__pyx_t_3, __pyx_v_dt, __pyx_v_position, __pyx_v_speed, __pyx_v_mass, __pyx_v_lower_planet_index, __pyx_v_upper_planet_index};
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 6+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(5+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 15, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(6+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 16, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       if (__pyx_t_3) {
         __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -1451,10 +1472,13 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
       __Pyx_INCREF(__pyx_v_mass);
       __Pyx_GIVEREF(__pyx_v_mass);
       PyTuple_SET_ITEM(__pyx_t_5, 3+__pyx_t_4, __pyx_v_mass);
-      __Pyx_INCREF(__pyx_v_current_planet);
-      __Pyx_GIVEREF(__pyx_v_current_planet);
-      PyTuple_SET_ITEM(__pyx_t_5, 4+__pyx_t_4, __pyx_v_current_planet);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+      __Pyx_INCREF(__pyx_v_lower_planet_index);
+      __Pyx_GIVEREF(__pyx_v_lower_planet_index);
+      PyTuple_SET_ITEM(__pyx_t_5, 4+__pyx_t_4, __pyx_v_lower_planet_index);
+      __Pyx_INCREF(__pyx_v_upper_planet_index);
+      __Pyx_GIVEREF(__pyx_v_upper_planet_index);
+      PyTuple_SET_ITEM(__pyx_t_5, 5+__pyx_t_4, __pyx_v_upper_planet_index);
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -1462,14 +1486,127 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
     __Pyx_XDECREF_SET(__pyx_v_result, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":17
- *         result = single_planet(dt, position, speed, mass, current_planet)
+    /* "PubycWorker.py":18
+ *         result = single_planet(dt, position, speed, mass, lower_planet_index, upper_planet_index)
  * 
- *         result_queue.put(result)             # <<<<<<<<<<<<<<
- *         job_queue.task_done()
+ *         for result_tuple in result:             # <<<<<<<<<<<<<<
+ *             result_queue.put(result_tuple)
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_result_queue, __pyx_n_s_put); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
+    if (likely(PyList_CheckExact(__pyx_v_result)) || PyTuple_CheckExact(__pyx_v_result)) {
+      __pyx_t_1 = __pyx_v_result; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
+      __pyx_t_7 = NULL;
+    } else {
+      __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_result); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 18, __pyx_L1_error)
+    }
+    for (;;) {
+      if (likely(!__pyx_t_7)) {
+        if (likely(PyList_CheckExact(__pyx_t_1))) {
+          if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 18, __pyx_L1_error)
+          #else
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          #endif
+        } else {
+          if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 18, __pyx_L1_error)
+          #else
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          #endif
+        }
+      } else {
+        __pyx_t_2 = __pyx_t_7(__pyx_t_1);
+        if (unlikely(!__pyx_t_2)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(0, 18, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_2);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_result_tuple, __pyx_t_2);
+      __pyx_t_2 = 0;
+
+      /* "PubycWorker.py":19
+ * 
+ *         for result_tuple in result:
+ *             result_queue.put(result_tuple)             # <<<<<<<<<<<<<<
+ * 
+ *         job_queue.task_done()
+ */
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_result_queue, __pyx_n_s_put); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 19, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_3 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+        __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_5);
+        if (likely(__pyx_t_3)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+          __Pyx_INCREF(__pyx_t_3);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_5, function);
+        }
+      }
+      if (!__pyx_t_3) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_result_tuple); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        #if CYTHON_FAST_PYCALL
+        if (PyFunction_Check(__pyx_t_5)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_result_tuple};
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+        } else
+        #endif
+        #if CYTHON_FAST_PYCCALL
+        if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_result_tuple};
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+        } else
+        #endif
+        {
+          __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 19, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_3); __pyx_t_3 = NULL;
+          __Pyx_INCREF(__pyx_v_result_tuple);
+          __Pyx_GIVEREF(__pyx_v_result_tuple);
+          PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_v_result_tuple);
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+        }
+      }
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+      /* "PubycWorker.py":18
+ *         result = single_planet(dt, position, speed, mass, lower_planet_index, upper_planet_index)
+ * 
+ *         for result_tuple in result:             # <<<<<<<<<<<<<<
+ *             result_queue.put(result_tuple)
+ * 
+ */
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "PubycWorker.py":21
+ *             result_queue.put(result_tuple)
+ * 
+ *         job_queue.task_done()             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_job_queue, __pyx_n_s_task_done); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1481,65 +1618,11 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
         __Pyx_DECREF_SET(__pyx_t_2, function);
       }
     }
-    if (!__pyx_t_5) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_result); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
+    if (__pyx_t_5) {
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else {
-      #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_2)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_result};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __Pyx_GOTREF(__pyx_t_1);
-      } else
-      #endif
-      #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_result};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __Pyx_GOTREF(__pyx_t_1);
-      } else
-      #endif
-      {
-        __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 17, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5); __pyx_t_5 = NULL;
-        __Pyx_INCREF(__pyx_v_result);
-        __Pyx_GIVEREF(__pyx_v_result);
-        PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_v_result);
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      }
-    }
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "PubycWorker.py":18
- * 
- *         result_queue.put(result)
- *         job_queue.task_done()             # <<<<<<<<<<<<<<
- * 
- * 
- */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_job_queue, __pyx_n_s_task_done); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_3)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_3);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    if (__pyx_t_3) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    } else {
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -1562,6 +1645,7 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("PubycWorker.worker_single_planet", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -1570,14 +1654,16 @@ static PyObject *__pyx_pf_11PubycWorker_worker_single_planet(CYTHON_UNUSED PyObj
   __Pyx_XDECREF(__pyx_v_position);
   __Pyx_XDECREF(__pyx_v_speed);
   __Pyx_XDECREF(__pyx_v_mass);
-  __Pyx_XDECREF(__pyx_v_current_planet);
+  __Pyx_XDECREF(__pyx_v_lower_planet_index);
+  __Pyx_XDECREF(__pyx_v_upper_planet_index);
   __Pyx_XDECREF(__pyx_v_result);
+  __Pyx_XDECREF(__pyx_v_result_tuple);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "PubycWorker.py":21
+/* "PubycWorker.py":24
  * 
  * 
  * def start_workers(m):             # <<<<<<<<<<<<<<
@@ -1617,14 +1703,14 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("start_workers", 0);
 
-  /* "PubycWorker.py":22
+  /* "PubycWorker.py":25
  * 
  * def start_workers(m):
  *     job_queue, result_queue = m.get_job_queue(), m.get_result_queue()             # <<<<<<<<<<<<<<
  *     nr_of_processes = cpu_count()
  *     processes = [
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_m, __pyx_n_s_get_job_queue); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_m, __pyx_n_s_get_job_queue); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1637,14 +1723,14 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_m, __pyx_n_s_get_result_queue); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_m, __pyx_n_s_get_result_queue); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -1657,10 +1743,10 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
     }
   }
   if (__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -1669,14 +1755,14 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
   __pyx_v_result_queue = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "PubycWorker.py":23
+  /* "PubycWorker.py":26
  * def start_workers(m):
  *     job_queue, result_queue = m.get_job_queue(), m.get_result_queue()
  *     nr_of_processes = cpu_count()             # <<<<<<<<<<<<<<
  *     processes = [
  *             Process(target = worker_single_planet, args = (job_queue, result_queue))
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_cpu_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_cpu_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -1689,48 +1775,48 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nr_of_processes = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "PubycWorker.py":24
+  /* "PubycWorker.py":27
  *     job_queue, result_queue = m.get_job_queue(), m.get_result_queue()
  *     nr_of_processes = cpu_count()
  *     processes = [             # <<<<<<<<<<<<<<
  *             Process(target = worker_single_planet, args = (job_queue, result_queue))
  *             for i in range(nr_of_processes)
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "PubycWorker.py":26
+  /* "PubycWorker.py":29
  *     processes = [
  *             Process(target = worker_single_planet, args = (job_queue, result_queue))
  *             for i in range(nr_of_processes)             # <<<<<<<<<<<<<<
  *     ]
  * 
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_nr_of_processes);
   __Pyx_GIVEREF(__pyx_v_nr_of_processes);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_nr_of_processes);
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_1, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_1, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
     __pyx_t_1 = __pyx_t_3; __Pyx_INCREF(__pyx_t_1); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 29, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (;;) {
@@ -1738,17 +1824,17 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 29, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 29, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       }
@@ -1758,7 +1844,7 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 26, __pyx_L1_error)
+          else __PYX_ERR(0, 29, __pyx_L1_error)
         }
         break;
       }
@@ -1767,22 +1853,22 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
     __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "PubycWorker.py":25
+    /* "PubycWorker.py":28
  *     nr_of_processes = cpu_count()
  *     processes = [
  *             Process(target = worker_single_planet, args = (job_queue, result_queue))             # <<<<<<<<<<<<<<
  *             for i in range(nr_of_processes)
  *     ]
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_Process); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_Process); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 25, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_worker_single_planet); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 25, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_worker_single_planet); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_target, __pyx_t_7) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_target, __pyx_t_7) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 25, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_INCREF(__pyx_v_job_queue);
     __Pyx_GIVEREF(__pyx_v_job_queue);
@@ -1790,16 +1876,16 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
     __Pyx_INCREF(__pyx_v_result_queue);
     __Pyx_GIVEREF(__pyx_v_result_queue);
     PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_v_result_queue);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_args, __pyx_t_7) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_args, __pyx_t_7) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 25, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 24, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 27, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "PubycWorker.py":26
+    /* "PubycWorker.py":29
  *     processes = [
  *             Process(target = worker_single_planet, args = (job_queue, result_queue))
  *             for i in range(nr_of_processes)             # <<<<<<<<<<<<<<
@@ -1811,7 +1897,7 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
   __pyx_v_processes = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "PubycWorker.py":29
+  /* "PubycWorker.py":32
  *     ]
  * 
  *     for p in processes:             # <<<<<<<<<<<<<<
@@ -1822,22 +1908,22 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
   for (;;) {
     if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_2)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 32, __pyx_L1_error)
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_p, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":30
+    /* "PubycWorker.py":33
  * 
  *     for p in processes:
  *         p.start()             # <<<<<<<<<<<<<<
  *     return nr_of_processes
  * 
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_p, __pyx_n_s_start); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 30, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_p, __pyx_n_s_start); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
@@ -1850,16 +1936,16 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
       }
     }
     if (__pyx_t_4) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":29
+    /* "PubycWorker.py":32
  *     ]
  * 
  *     for p in processes:             # <<<<<<<<<<<<<<
@@ -1869,7 +1955,7 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "PubycWorker.py":31
+  /* "PubycWorker.py":34
  *     for p in processes:
  *         p.start()
  *     return nr_of_processes             # <<<<<<<<<<<<<<
@@ -1881,7 +1967,7 @@ static PyObject *__pyx_pf_11PubycWorker_2start_workers(CYTHON_UNUSED PyObject *_
   __pyx_r = __pyx_v_nr_of_processes;
   goto __pyx_L0;
 
-  /* "PubycWorker.py":21
+  /* "PubycWorker.py":24
  * 
  * 
  * def start_workers(m):             # <<<<<<<<<<<<<<
@@ -1960,7 +2046,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_connect, __pyx_k_connect, sizeof(__pyx_k_connect), 0, 0, 1, 1},
   {&__pyx_n_s_cpu_count, __pyx_k_cpu_count, sizeof(__pyx_k_cpu_count), 0, 0, 1, 1},
-  {&__pyx_n_s_current_planet, __pyx_k_current_planet, sizeof(__pyx_k_current_planet), 0, 0, 1, 1},
   {&__pyx_n_s_dt, __pyx_k_dt, sizeof(__pyx_k_dt), 0, 0, 1, 1},
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_exit, __pyx_k_exit, sizeof(__pyx_k_exit), 0, 0, 1, 1},
@@ -1971,6 +2056,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_job_queue, __pyx_k_job_queue, sizeof(__pyx_k_job_queue), 0, 0, 1, 1},
+  {&__pyx_n_s_lower_planet_index, __pyx_k_lower_planet_index, sizeof(__pyx_k_lower_planet_index), 0, 0, 1, 1},
   {&__pyx_n_s_m, __pyx_k_m, sizeof(__pyx_k_m), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_mass, __pyx_k_mass, sizeof(__pyx_k_mass), 0, 0, 1, 1},
@@ -1986,6 +2072,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_register, __pyx_k_register, sizeof(__pyx_k_register), 0, 0, 1, 1},
   {&__pyx_n_s_result, __pyx_k_result, sizeof(__pyx_k_result), 0, 0, 1, 1},
   {&__pyx_n_s_result_queue, __pyx_k_result_queue, sizeof(__pyx_k_result_queue), 0, 0, 1, 1},
+  {&__pyx_n_s_result_tuple, __pyx_k_result_tuple, sizeof(__pyx_k_result_tuple), 0, 0, 1, 1},
   {&__pyx_n_b_secret, __pyx_k_secret, sizeof(__pyx_k_secret), 0, 0, 0, 1},
   {&__pyx_kp_s_server_IP_server_socket, __pyx_k_server_IP_server_socket, sizeof(__pyx_k_server_IP_server_socket), 0, 0, 1, 0},
   {&__pyx_n_s_server_ip, __pyx_k_server_ip, sizeof(__pyx_k_server_ip), 0, 0, 1, 1},
@@ -1998,13 +2085,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_target, __pyx_k_target, sizeof(__pyx_k_target), 0, 0, 1, 1},
   {&__pyx_n_s_task_done, __pyx_k_task_done, sizeof(__pyx_k_task_done), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_upper_planet_index, __pyx_k_upper_planet_index, sizeof(__pyx_k_upper_planet_index), 0, 0, 1, 1},
   {&__pyx_kp_s_usage, __pyx_k_usage, sizeof(__pyx_k_usage), 0, 0, 1, 0},
   {&__pyx_n_s_worker_single_planet, __pyx_k_worker_single_planet, sizeof(__pyx_k_worker_single_planet), 0, 0, 1, 1},
   {&__pyx_kp_s_workers_started, __pyx_k_workers_started, sizeof(__pyx_k_workers_started), 0, 0, 1, 0},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 29, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2021,53 +2109,53 @@ static int __Pyx_InitCachedConstants(void) {
  *     while True:
  *         args = job_queue.get()
  */
-  __pyx_tuple_ = PyTuple_Pack(9, __pyx_n_s_job_queue, __pyx_n_s_result_queue, __pyx_n_s_args, __pyx_n_s_dt, __pyx_n_s_position, __pyx_n_s_speed, __pyx_n_s_mass, __pyx_n_s_current_planet, __pyx_n_s_result); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(11, __pyx_n_s_job_queue, __pyx_n_s_result_queue, __pyx_n_s_args, __pyx_n_s_dt, __pyx_n_s_position, __pyx_n_s_speed, __pyx_n_s_mass, __pyx_n_s_lower_planet_index, __pyx_n_s_upper_planet_index, __pyx_n_s_result, __pyx_n_s_result_tuple); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_PubycWorker_py, __pyx_n_s_worker_single_planet, 5, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_PubycWorker_py, __pyx_n_s_worker_single_planet, 5, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 5, __pyx_L1_error)
 
-  /* "PubycWorker.py":21
+  /* "PubycWorker.py":24
  * 
  * 
  * def start_workers(m):             # <<<<<<<<<<<<<<
  *     job_queue, result_queue = m.get_job_queue(), m.get_result_queue()
  *     nr_of_processes = cpu_count()
  */
-  __pyx_tuple__3 = PyTuple_Pack(7, __pyx_n_s_m, __pyx_n_s_job_queue, __pyx_n_s_result_queue, __pyx_n_s_nr_of_processes, __pyx_n_s_processes, __pyx_n_s_p, __pyx_n_s_i); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(7, __pyx_n_s_m, __pyx_n_s_job_queue, __pyx_n_s_result_queue, __pyx_n_s_nr_of_processes, __pyx_n_s_processes, __pyx_n_s_p, __pyx_n_s_i); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_PubycWorker_py, __pyx_n_s_start_workers, 21, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_PubycWorker_py, __pyx_n_s_start_workers, 24, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 24, __pyx_L1_error)
 
-  /* "PubycWorker.py":38
+  /* "PubycWorker.py":41
  *     if len(argv) < 3:
  *         print('usage:', argv[0], 'server_IP server_socket')
  *         exit(0)             # <<<<<<<<<<<<<<
  *     server_ip = argv[1]
  *     server_socket = int(argv[2])
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_int_0); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_int_0); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "PubycWorker.py":41
+  /* "PubycWorker.py":44
  *     server_ip = argv[1]
  *     server_socket = int(argv[2])
  *     TaskManager.register('get_job_queue')             # <<<<<<<<<<<<<<
  *     TaskManager.register('get_result_queue')
  *     m = TaskManager(address=(server_ip, server_socket), authkey = b'secret')
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_get_job_queue); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_get_job_queue); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "PubycWorker.py":42
+  /* "PubycWorker.py":45
  *     server_socket = int(argv[2])
  *     TaskManager.register('get_job_queue')
  *     TaskManager.register('get_result_queue')             # <<<<<<<<<<<<<<
  *     m = TaskManager(address=(server_ip, server_socket), authkey = b'secret')
  *     m.connect()
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_n_s_get_result_queue); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_n_s_get_result_queue); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
   __Pyx_RefNannyFinishContext();
@@ -2315,39 +2403,39 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_worker_single_planet, __pyx_t_2) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "PubycWorker.py":21
+  /* "PubycWorker.py":24
  * 
  * 
  * def start_workers(m):             # <<<<<<<<<<<<<<
  *     job_queue, result_queue = m.get_job_queue(), m.get_result_queue()
  *     nr_of_processes = cpu_count()
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_11PubycWorker_3start_workers, 0, __pyx_n_s_start_workers, NULL, __pyx_n_s_PubycWorker, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_11PubycWorker_3start_workers, 0, __pyx_n_s_start_workers, NULL, __pyx_n_s_PubycWorker, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_start_workers, __pyx_t_2) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_start_workers, __pyx_t_2) < 0) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "PubycWorker.py":34
+  /* "PubycWorker.py":37
  * 
  * 
  * if __name__ == '__main__':             # <<<<<<<<<<<<<<
  *     from sys import argv, exit
  *     if len(argv) < 3:
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_main, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_main, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_3) {
 
-    /* "PubycWorker.py":35
+    /* "PubycWorker.py":38
  * 
  * if __name__ == '__main__':
  *     from sys import argv, exit             # <<<<<<<<<<<<<<
  *     if len(argv) < 3:
  *         print('usage:', argv[0], 'server_IP server_socket')
  */
-    __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_n_s_argv);
     __Pyx_GIVEREF(__pyx_n_s_argv);
@@ -2355,46 +2443,46 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
     __Pyx_INCREF(__pyx_n_s_exit);
     __Pyx_GIVEREF(__pyx_n_s_exit);
     PyList_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_exit);
-    __pyx_t_1 = __Pyx_Import(__pyx_n_s_sys, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_Import(__pyx_n_s_sys, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_argv); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_argv); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_argv, __pyx_t_2) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_argv, __pyx_t_2) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_exit); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_exit); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_exit, __pyx_t_2) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_exit, __pyx_t_2) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":36
+    /* "PubycWorker.py":39
  * if __name__ == '__main__':
  *     from sys import argv, exit
  *     if len(argv) < 3:             # <<<<<<<<<<<<<<
  *         print('usage:', argv[0], 'server_IP server_socket')
  *         exit(0)
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_argv); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_argv); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 36, __pyx_L1_error)
+    __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 39, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_3 = ((__pyx_t_4 < 3) != 0);
     if (__pyx_t_3) {
 
-      /* "PubycWorker.py":37
+      /* "PubycWorker.py":40
  *     from sys import argv, exit
  *     if len(argv) < 3:
  *         print('usage:', argv[0], 'server_IP server_socket')             # <<<<<<<<<<<<<<
  *         exit(0)
  *     server_ip = argv[1]
  */
-      __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_argv); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_argv); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_kp_s_usage);
       __Pyx_GIVEREF(__pyx_kp_s_usage);
@@ -2405,24 +2493,24 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
       __Pyx_GIVEREF(__pyx_kp_s_server_IP_server_socket);
       PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_s_server_IP_server_socket);
       __pyx_t_2 = 0;
-      if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
+      if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "PubycWorker.py":38
+      /* "PubycWorker.py":41
  *     if len(argv) < 3:
  *         print('usage:', argv[0], 'server_IP server_socket')
  *         exit(0)             # <<<<<<<<<<<<<<
  *     server_ip = argv[1]
  *     server_socket = int(argv[2])
  */
-      __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_exit); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_exit); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "PubycWorker.py":36
+      /* "PubycWorker.py":39
  * if __name__ == '__main__':
  *     from sys import argv, exit
  *     if len(argv) < 3:             # <<<<<<<<<<<<<<
@@ -2431,89 +2519,89 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
  */
     }
 
-    /* "PubycWorker.py":39
+    /* "PubycWorker.py":42
  *         print('usage:', argv[0], 'server_IP server_socket')
  *         exit(0)
  *     server_ip = argv[1]             # <<<<<<<<<<<<<<
  *     server_socket = int(argv[2])
  *     TaskManager.register('get_job_queue')
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_argv); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_argv); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_server_ip, __pyx_t_1) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_server_ip, __pyx_t_1) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":40
+    /* "PubycWorker.py":43
  *         exit(0)
  *     server_ip = argv[1]
  *     server_socket = int(argv[2])             # <<<<<<<<<<<<<<
  *     TaskManager.register('get_job_queue')
  *     TaskManager.register('get_result_queue')
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_argv); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_argv); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_server_socket, __pyx_t_1) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_server_socket, __pyx_t_1) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":41
+    /* "PubycWorker.py":44
  *     server_ip = argv[1]
  *     server_socket = int(argv[2])
  *     TaskManager.register('get_job_queue')             # <<<<<<<<<<<<<<
  *     TaskManager.register('get_result_queue')
  *     m = TaskManager(address=(server_ip, server_socket), authkey = b'secret')
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_TaskManager); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_TaskManager); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_register); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_register); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":42
+    /* "PubycWorker.py":45
  *     server_socket = int(argv[2])
  *     TaskManager.register('get_job_queue')
  *     TaskManager.register('get_result_queue')             # <<<<<<<<<<<<<<
  *     m = TaskManager(address=(server_ip, server_socket), authkey = b'secret')
  *     m.connect()
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_TaskManager); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_TaskManager); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_register); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_register); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":43
+    /* "PubycWorker.py":46
  *     TaskManager.register('get_job_queue')
  *     TaskManager.register('get_result_queue')
  *     m = TaskManager(address=(server_ip, server_socket), authkey = b'secret')             # <<<<<<<<<<<<<<
  *     m.connect()
  *     nr_of_processes = start_workers(m)
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_TaskManager); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_TaskManager); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_server_ip); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 43, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_server_ip); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_server_socket); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 43, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_server_socket); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 43, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5);
@@ -2521,26 +2609,26 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
     PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_6);
     __pyx_t_5 = 0;
     __pyx_t_6 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_address, __pyx_t_7) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_address, __pyx_t_7) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_authkey, __pyx_n_b_secret) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 43, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_authkey, __pyx_n_b_secret) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_m, __pyx_t_7) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_m, __pyx_t_7) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "PubycWorker.py":44
+    /* "PubycWorker.py":47
  *     TaskManager.register('get_result_queue')
  *     m = TaskManager(address=(server_ip, server_socket), authkey = b'secret')
  *     m.connect()             # <<<<<<<<<<<<<<
  *     nr_of_processes = start_workers(m)
  *     print(nr_of_processes, 'workers started')
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_connect); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_connect); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_2 = NULL;
@@ -2554,24 +2642,24 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
       }
     }
     if (__pyx_t_2) {
-      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 47, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
-      __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 47, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "PubycWorker.py":45
+    /* "PubycWorker.py":48
  *     m = TaskManager(address=(server_ip, server_socket), authkey = b'secret')
  *     m.connect()
  *     nr_of_processes = start_workers(m)             # <<<<<<<<<<<<<<
  *     print(nr_of_processes, 'workers started')
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_start_workers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_start_workers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -2584,14 +2672,14 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_7);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_1)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-        __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2600,36 +2688,36 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-        __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       } else
       #endif
       {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 45, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 48, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_2);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
         __pyx_t_2 = 0;
-        __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_nr_of_processes, __pyx_t_7) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_nr_of_processes, __pyx_t_7) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "PubycWorker.py":46
+    /* "PubycWorker.py":49
  *     m.connect()
  *     nr_of_processes = start_workers(m)
  *     print(nr_of_processes, 'workers started')             # <<<<<<<<<<<<<<
  */
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_nr_of_processes); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_nr_of_processes); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_7);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7);
@@ -2637,10 +2725,10 @@ static int __pyx_pymod_exec_PubycWorker(PyObject *__pyx_pyinit_module)
     __Pyx_GIVEREF(__pyx_kp_s_workers_started);
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_kp_s_workers_started);
     __pyx_t_7 = 0;
-    if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "PubycWorker.py":34
+    /* "PubycWorker.py":37
  * 
  * 
  * if __name__ == '__main__':             # <<<<<<<<<<<<<<

@@ -1,25 +1,11 @@
-from PubycWorkerEngine import single_planet
 from PubycTaskManager import TaskManager
 from multiprocessing import cpu_count, Process
 
 def worker_single_planet(job_queue, result_queue):
     while True:
         args = job_queue.get()
-        
-        dt = args [0]
-        position = args [1]
-        speed = args [2]
-        mass = args [3]
-        lower_planet_index = args [4]
-        upper_planet_index = args [5]
-
-        result = single_planet(dt, position, speed, mass, lower_planet_index, upper_planet_index)
-        
-        for result_tuple in result:
-            result_queue.put(result_tuple)
-        
+        result_queue.put(((0, 0, 0, 0, 0, 0), 0))
         job_queue.task_done()
-
         
 def start_workers(m):
     job_queue, result_queue = m.get_job_queue(), m.get_result_queue()

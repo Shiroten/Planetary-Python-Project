@@ -23,15 +23,13 @@ def single_step_arguments(partsize, dt, position, speed, masse, l_in):
     
     return l_in
 
-def update_list(result_list, position, speed):
-    for result_tuple in result_list:
+def update_list(result_tuple, position, speed):
         position[result_tuple[1]] = (result_tuple[0][0], result_tuple[0][1], result_tuple[0][2])
         speed[result_tuple[1]] = (result_tuple[0][3], result_tuple[0][4], result_tuple[0][5]) 
 
-def single_step(taskmanager, partsize, dt, position, speed, masse):
+def single_step(job_queue, result_queue, partsize, dt, position, speed, masse):
     arguments_list = []
     result_list = []
-    job_queue, result_queue = taskmanager.get_job_queue(), taskmanager.get_result_queue()
 
     arguments_list = single_step_arguments(partsize, dt, position, speed, masse, arguments_list)
 
@@ -39,15 +37,12 @@ def single_step(taskmanager, partsize, dt, position, speed, masse):
     
     for parameter_set in arguments_list:
         #print(parameter_set)
-        job_queue.put(parameter_set) 
-
-    job_queue.join()
+        job_queue.put(parameter_set)     
 
     while not result_queue.empty():
-        result_list.append(result_queue.get())
+        update_list(result_queue.get(), position, speed)
 
-    update_list(result_list, position, speed)
-        
+    job_queue.join()   
         
 if __name__ == '__main__':
     from sys import argv, exit
@@ -66,9 +61,11 @@ if __name__ == '__main__':
     TaskManager.register('get_result_queue')
     taskmanager = TaskManager(address=(server_ip, server_socket), authkey = b'secret')
     taskmanager.connect()
-
+    job_queue, result_queue = taskmanager.get_job_queue(), taskmanager.get_result_queue()
+    
     t1 = time.time()
-    result = single_step(taskmanager, partsize, args_dt, position, speed, masse)
+    result = single_step(job_queue, result_queue, partsize, args_dt, position, speed, masse)
     t2 = time.time()
+    
     print(' result: ', result)
     print(' time:   ', t2-t1, ' s\n')

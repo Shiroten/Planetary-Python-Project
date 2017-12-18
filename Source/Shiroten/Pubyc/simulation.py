@@ -1,6 +1,5 @@
 from PubycMaster import single_step
 from PubycTaskManager import TaskManager
-import matplotlib.pyplot as plt
 import numpy as np
 
 import math
@@ -10,17 +9,19 @@ import datetime
 
 from simulation_constants import END_MESSAGE
 
-def startup(sim_pipe, pos, vel, mass, rad, max_size, log, dt):
+def startup(sim_pipe, pos, vel, mas, rad, max_size, log, dt):
     position = np.array(pos, dtype=np.float64)
     speed = np.array(vel,dtype=np.float64)
-    masse = np.array(mass,dtype=np.float64)
+    mass = np.array(mas,dtype=np.float64)
 
     TaskManager.register('get_job_queue')
     TaskManager.register('get_result_queue')
-    server_ip = "192.168.178.210"
+    server_ip = "192.168.178.203"
     server_socket = 12345
     taskmanager = TaskManager(address=(server_ip, server_socket), authkey = b'secret')
     taskmanager.connect()
+    job_queue, result_queue = taskmanager.get_job_queue(), taskmanager.get_result_queue()
+    partsize = (int) (len(pos) / 32)
 
     cnt = 0
     timer = datetime.datetime.now()
@@ -39,7 +40,7 @@ def startup(sim_pipe, pos, vel, mass, rad, max_size, log, dt):
                     print('simulation exiting ...')
                     sys.exit(0)
         
-        single_step(taskmanager, dt, position, speed, masse)
+        single_step(job_queue, result_queue, partsize, dt, position, speed, mass)
 
         body_array = np.zeros((len(position), 4), dtype=np.float64)
         normalization = -11
@@ -53,7 +54,7 @@ def startup(sim_pipe, pos, vel, mass, rad, max_size, log, dt):
 
         sim_pipe.send(body_array)
         
-        cnt = (cnt + 1) % 50
+        cnt = (cnt + 1) % 10
         timer_end = datetime.datetime.now()
         if cnt == 1:
             print(timer_end - timer)
