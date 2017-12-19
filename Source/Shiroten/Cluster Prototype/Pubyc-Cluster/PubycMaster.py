@@ -24,8 +24,9 @@ def single_step_arguments(partsize, dt, position, speed, masse, l_in):
     return l_in
 
 def update_list(result_tuple, position, speed):
-        position[result_tuple[1]] = (result_tuple[0][0], result_tuple[0][1], result_tuple[0][2])
-        speed[result_tuple[1]] = (result_tuple[0][3], result_tuple[0][4], result_tuple[0][5]) 
+        #print(result_tuple)
+        position[(int)(result_tuple[1])] = (result_tuple[0][0], result_tuple[0][1], result_tuple[0][2])
+        speed[(int)(result_tuple[1])] = (result_tuple[0][3], result_tuple[0][4], result_tuple[0][5]) 
 
 def single_step(job_queue, result_queue, partsize, dt, position, speed, masse):
     arguments_list = []
@@ -39,10 +40,30 @@ def single_step(job_queue, result_queue, partsize, dt, position, speed, masse):
         #print(parameter_set)
         job_queue.put(parameter_set)     
 
+    counter1 = 0 
+    counter2 = 0
+    cache = []
+    
+    while len(cache) < len(position) / 5:
+        cache.append(result_queue.get())
+        
+    for tuples in cache:
+        update_list(tuples, position, speed)
+        counter1 +=1
+        
     while not result_queue.empty():
         update_list(result_queue.get(), position, speed)
-
-    job_queue.join()   
+        counter1 +=1
+    
+    job_queue.join()
+    
+    while not result_queue.empty():
+        update_list(result_queue.get(), position, speed)
+        counter2 +=1
+    
+    print(counter1, counter2)
+        
+       
         
 if __name__ == '__main__':
     from sys import argv, exit

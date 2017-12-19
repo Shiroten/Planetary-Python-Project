@@ -27,8 +27,9 @@ cpdef single_planet(dt, position, speed, masse, lower_planet_index, upper_planet
                              pos_speed[i][3], 
                              pos_speed[i][4], 
                              pos_speed[i][5]),
-                             i + lower_planet_index))
+                             pos_speed[i][6]))   
         
+    #print(return_list)    
     return return_list
 
 @cython.boundscheck(False)
@@ -58,7 +59,7 @@ cdef double [:, :] cdef_single_planet(double dt,
     
     cdef double [:, :]       all_force = np.zeros((thread_num, 3),  dtype=np.float64)
     cdef double [:, :]    acceleration = np.zeros((thread_num, 3),  dtype=np.float64)
-    cdef double [:, :] return_value = np.zeros((number_of_planets, 6),  dtype=np.float64)
+    cdef double [:, :] return_value = np.zeros((number_of_planets, 7),  dtype=np.float64)
     
     for current_planet in prange (lower_planet_index, 
                                   upper_planet_index + 1, 
@@ -95,19 +96,20 @@ cdef double [:, :] cdef_single_planet(double dt,
         acceleration[thread_id][2] = all_force[thread_id][2] / mass_view[current_planet]        
 
         return_value[result_index][0] = position_view[current_planet][0]  \
-                        + dt * speed_view[current_planet][0] \
-                        + ((dt * dt) / 2) * acceleration[thread_id][0]
+                                      + dt * speed_view[current_planet][0] \
+                                      + ((dt * dt) / 2) * acceleration[thread_id][0]
 
         return_value[result_index][1] = position_view[current_planet][1] \
-                        + dt * speed_view[current_planet][1] \
-                        + ((dt * dt) / 2) * acceleration[thread_id][1]
+                                      + dt * speed_view[current_planet][1] \
+                                      + ((dt * dt) / 2) * acceleration[thread_id][1]
 
         return_value[result_index][2] = position_view[current_planet][2]  \
-                        + dt * speed_view[current_planet][2] \
-                        + ((dt * dt) / 2) * acceleration[thread_id][2]
+                                      + dt * speed_view[current_planet][2] \
+                                      + ((dt * dt) / 2) * acceleration[thread_id][2]
 
         return_value[result_index][3] = speed_view[current_planet][0] + dt * acceleration[thread_id][0]
         return_value[result_index][4] = speed_view[current_planet][1] + dt * acceleration[thread_id][1]
-        return_value[result_index][5] = speed_view[current_planet][2] + dt * acceleration[thread_id][2]             
+        return_value[result_index][5] = speed_view[current_planet][2] + dt * acceleration[thread_id][2]
+        return_value[result_index][6] = current_planet
 
     return return_value
